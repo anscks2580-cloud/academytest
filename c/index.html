@@ -1,0 +1,1128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<style>[hidden]{display:none!important} body{margin:0} img{max-width:100%}</style>
+</head>
+<body>
+<title>새봄수학학원 시안 C</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* 레이아웃: 왼쪽 고정 세로 메뉴(검정) + 오른쪽 본문, 포스터처럼 큰 제목과 빨간 면 하나 · 흑백 대비 */
+:root {
+  --paper: #f6f5f2;
+  --card: #ffffff;
+  --ink: #121212;
+  --muted: #6a6864;
+  --line: #e0ddd6;
+  --night: #121212;
+  --accent: #e03a26;
+  --accent-ink: #ffffff;
+  --gold: #c42f1c;
+  --tint: #fcebe7;
+  --ok: #24804f;
+  --warn: #c42f1c;
+  --soft: #efede8;
+  --display: 'Black Han Sans', 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  --body: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wrap { max-width: 1100px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { text-wrap: balance; }
+
+/* ── 머리(왼쪽 세로 메뉴) ── */
+.shell { display: grid; grid-template-columns: 250px minmax(0, 1fr); min-height: 100vh; }
+.rail { background: var(--night); color: #fff; position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; padding: 30px 22px 24px; overflow-y: auto; }
+.rail .logo { background: none; border: 0; color: #fff; text-align: left; cursor: pointer; padding: 0; }
+.rail .logo b { display: block; font-family: var(--display); font-size: 30px; line-height: 1.1; font-weight: 400; letter-spacing: -0.5px; }
+.rail .logo i { display: block; width: 36px; height: 6px; background: var(--accent); margin-bottom: 14px; }
+.rail .logo small { display: block; color: #8d8b86; font-size: 12px; margin-top: 8px; letter-spacing: 2px; }
+.rnav { display: grid; gap: 2px; margin-top: 40px; }
+.rnav button { background: none; border: 0; color: #bdbab3; text-align: left; font-size: 17px; font-weight: 700; padding: 10px 0; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+.rnav button::before { content: ''; width: 0; height: 2px; background: var(--accent); transition: width .15s; }
+.rnav button:hover, .rnav button.on { color: #fff; }
+.rnav button.on::before, .rnav button:hover::before { width: 18px; }
+.rfoot { margin-top: auto; display: grid; gap: 8px; padding-top: 28px; border-top: 1px solid #2c2c2c; font-size: 13px; color: #8d8b86; }
+.rfoot .tel { color: #fff; font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; }
+.rfoot .btn { width: 100%; }
+.rfoot .btn.line { color: #fff; border-color: #3a3a3a; }
+.rfoot .btn.line:hover { border-color: #fff; }
+.mtop { display: none; }
+.mnav { display: none; }
+.content { min-width: 0; grid-column: 2; grid-row: 1; }
+.rail { grid-column: 1; grid-row: 1; }
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; display: block; }
+  .rail { display: none; }
+  .mtop { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--night); color: #fff; padding-block: 14px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--night); }
+  .mtop .logo { background: none; border: 0; color: #fff; font-family: var(--display); font-size: 22px; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 8px; }
+  .mtop .logo i { width: 18px; height: 5px; background: var(--accent); }
+  .burger { background: none; border: 1px solid #3a3a3a; color: #fff; padding: 6px 12px; font-weight: 700; cursor: pointer; }
+  .mnav { display: none; background: var(--night); padding: 0 max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px)); }
+  .mnav.open { display: grid; gap: 2px; }
+  .mnav button { background: none; border: 0; border-top: 1px solid #2c2c2c; color: #fff; text-align: left; padding: 13px 0; font-size: 16px; font-weight: 700; cursor: pointer; }
+}
+/* ── 첫 화면 ── */
+.cwrap { padding: 0 max(28px, env(safe-area-inset-right, 0px)) 0 44px; max-width: 1180px; }
+.chero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 0; min-height: 520px; border-bottom: 2px solid var(--ink); }
+.chero-txt { padding: 64px 40px 48px 0; display: flex; flex-direction: column; min-width: 0; }
+.chero-txt .k { font-weight: 700; color: var(--accent); font-size: 15px; letter-spacing: 1px; }
+.chero-txt h1 { font-family: var(--display); font-weight: 400; font-size: clamp(42px, 5.4vw, 80px); line-height: 1.06; word-break: keep-all; letter-spacing: -2px; margin: 20px 0 0; }
+.chero-txt h1 em { font-style: normal; display: block; color: var(--accent); }
+.chero-txt p { font-size: 17px; color: var(--muted); margin: 26px 0 0; max-width: 28em; }
+.chero-txt .cta { margin-top: auto; padding-top: 34px; display: flex; gap: 0; flex-wrap: wrap; }
+.chero-txt .cta .btn { padding: 16px 26px; font-size: 16px; }
+.chero-img { position: relative; background: var(--accent); overflow: hidden; min-height: 320px; }
+.chero-img .ph { position: absolute; inset: 0; background-size: cover; background-position: center; filter: grayscale(1) contrast(1.15); mix-blend-mode: multiply; opacity: .9; }
+.chero-img .cap { position: absolute; left: 0; bottom: 0; background: var(--night); color: #fff; padding: 16px 20px; font-size: 13px; max-width: 80%; }
+.chero-img .cap b { display: block; font-size: 15px; }
+.cidx { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 2px solid var(--ink); }
+.cidx button { background: none; border: 0; border-right: 1px solid var(--line); padding: 22px 18px 24px; text-align: left; cursor: pointer; display: grid; gap: 6px; min-width: 0; }
+.cidx button:last-child { border-right: 0; }
+.cidx button:hover { background: #fff; }
+.cidx b { font-family: var(--display); font-weight: 400; font-size: 24px; }
+.cidx small { color: var(--muted); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cidx .arr { color: var(--accent); font-weight: 700; font-size: 13px; }
+.crow { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-bottom: 2px solid var(--ink); }
+.crow > div { padding: 34px 32px 36px 0; min-width: 0; }
+.crow > div + div { padding-left: 32px; border-left: 1px solid var(--line); }
+.crow h2, .csec h2 { font-family: var(--display); font-weight: 400; font-size: 30px; margin: 0 0 18px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.crow h2 button, .csec h2 button { background: none; border: 0; font-family: var(--body); font-size: 13px; font-weight: 700; color: var(--accent); cursor: pointer; }
+.nlist { display: grid; }
+.nlist button { display: grid; grid-template-columns: 96px 1fr; gap: 12px; background: none; border: 0; border-top: 1px solid var(--line); text-align: left; cursor: pointer; padding: 13px 0; }
+.nlist time { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.nlist span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; font-weight: 500; }
+.nlist button:hover span { color: var(--accent); }
+.tel { font-family: var(--display); font-size: 34px; line-height: 1.25; font-variant-numeric: tabular-nums; }
+.tel small { font-family: var(--body); font-size: 13px; font-weight: 700; color: var(--muted); margin-right: 10px; }
+.hours { color: var(--muted); margin-top: 10px; font-size: 14px; }
+.csec { padding-block: 40px 70px; }
+@media (max-width: 900px) {
+  .cwrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .chero { grid-template-columns: 1fr; }
+  .chero-txt { padding: 40px 0 34px; }
+  .chero-img { min-height: 240px; }
+  .cidx { grid-template-columns: 1fr 1fr; }
+  .cidx button:nth-child(2) { border-right: 0; }
+  .cidx button:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .crow { grid-template-columns: 1fr; }
+  .crow > div { padding-right: 0; }
+  .crow > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+}
+/* ── 공통 페이지 ── */
+.band { background: var(--night); color: #fff; }
+.band .wrap { padding-block: 46px 40px; }
+.band small { color: var(--accent); font-weight: 700; letter-spacing: 2px; font-size: 12px; }
+.band h1 { font-family: var(--display); font-weight: 400; font-size: 34px; margin: 6px 0 0; }
+.page { padding-block: 40px 80px; }
+.section { margin-top: 56px; }
+.section h2 { font-family: var(--display); font-weight: 600; font-size: 26px; margin: 0 0 18px; }
+.panel { background: var(--card); border: 1px solid var(--line); padding: 24px; }
+.muted { color: var(--muted); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--ink); background: var(--night); color: #fff; padding: 10px 18px; font-weight: 700; cursor: pointer; font-size: 14px; }
+.btn:hover { background: #000; }
+.btn.line { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn.line:hover { border-color: var(--ink); }
+.btn.yellow { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.danger { background: transparent; color: var(--warn); border-color: #e8c9bd; }
+.btn.danger:hover { border-color: var(--warn); }
+.btn.sm { padding: 6px 12px; font-size: 13px; }
+.btn:disabled { opacity: .45; cursor: default; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: var(--card); padding: 7px 16px; cursor: pointer; font-weight: 500; }
+.chip.on { background: var(--night); color: #fff; border-color: var(--night); }
+.lbl { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 1px; margin: 18px 0 8px; }
+.field { display: grid; gap: 6px; }
+.field label { font-size: 13px; font-weight: 700; }
+.field input, .field select, .field textarea { border: 1px solid var(--line); background: var(--card); padding: 10px 12px; width: 100%; min-width: 0; }
+.field textarea { min-height: 120px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--ink); outline: none; }
+.form { display: grid; gap: 14px; }
+.form .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 560px) { .form .two { grid-template-columns: 1fr; } }
+.check { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
+.empty { text-align: center; color: var(--muted); padding: 48px 12px; }
+
+/* 강좌 카드 */
+.cgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; }
+.ccard { background: var(--card); border: 1px solid var(--line); cursor: pointer; text-align: left; padding: 0; display: flex; flex-direction: column; min-width: 0; transition: border-color .15s; }
+.ccard:hover { border-color: var(--ink); }
+.ccard .th { aspect-ratio: 16/9; width: 100%; max-width: 100%; background: #333 center/cover no-repeat; position: relative; }
+.ccard .tag { position: absolute; left: 10px; top: 10px; background: rgba(0,0,0,.72); color: #fff; font-size: 12px; padding: 3px 8px; font-weight: 700; }
+.ccard .tag.mine { left: auto; right: 10px; background: var(--accent); color: var(--accent-ink); }
+.ccard .bd { padding: 14px 16px 16px; display: grid; gap: 4px; }
+.ccard .t { font-weight: 700; font-size: 15px; line-height: 1.45; }
+.ccard .s { font-size: 13px; color: var(--muted); }
+.pbar { height: 6px; background: #ececea; overflow: hidden; }
+.pbar i { display: block; height: 100%; background: var(--accent); }
+
+/* 강좌 보기 */
+.course-top { display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; align-items: start; }
+@media (max-width: 860px) { .course-top { grid-template-columns: 1fr; } }
+.player { background: #000; aspect-ratio: 16/9; width: 100%; max-width: 100%; display: grid; place-items: center; color: #aaa; }
+.player video { width: 100%; height: 100%; display: block; background: #000; }
+.lessons { display: grid; gap: 0; border: 1px solid var(--line); background: var(--card); }
+.lesson { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; padding: 12px 14px; border: 0; border-bottom: 1px solid var(--line); background: none; text-align: left; cursor: pointer; }
+.lesson:last-child { border-bottom: 0; }
+.lesson.on { background: var(--tint); }
+.lesson .no { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--muted); text-align: center; }
+.lesson .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.badge { font-size: 12px; padding: 2px 8px; border: 1px solid var(--line); white-space: nowrap; font-weight: 700; }
+.badge.done { border-color: var(--ok); color: var(--ok); }
+.badge.ing { border-color: var(--gold); color: var(--gold); }
+.badge.wait { color: var(--muted); }
+.lock { background: var(--card); border: 1px solid var(--line); padding: 44px 24px; text-align: center; }
+.lock h3 { font-family: var(--display); font-weight: 600; margin: 0 0 8px; }
+
+/* 게시판 */
+.board { width: 100%; border-collapse: collapse; background: var(--card); border-top: 2px solid var(--ink); }
+.board th, .board td { padding: 13px 10px; border-bottom: 1px solid var(--line); text-align: left; font-size: 14px; }
+.board th { font-size: 13px; color: var(--muted); font-weight: 700; }
+.board td.num, .board th.num { width: 64px; text-align: center; font-variant-numeric: tabular-nums; color: var(--muted); }
+.board td.date { width: 110px; font-variant-numeric: tabular-nums; color: var(--muted); }
+.board td.st { width: 90px; }
+.board tr.click { cursor: pointer; }
+.board tr.click:hover td { background: var(--soft); }
+.tbl { overflow-x: auto; }
+.post h2 { font-family: var(--display); font-weight: 600; font-size: 24px; margin: 0 0 6px; }
+.post .meta { color: var(--muted); font-size: 13px; padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+.post .body { white-space: pre-wrap; min-height: 80px; }
+.answer { margin-top: 24px; background: var(--soft); border-left: 3px solid var(--accent); padding: 18px 20px; white-space: pre-wrap; }
+.answer b { display: block; margin-bottom: 6px; white-space: normal; }
+
+/* 푸터 */
+.foot { background: var(--night); color: #b9b9b5; font-size: 13px; }
+.foot .wrap { padding-block: 34px 40px; display: grid; gap: 6px; }
+.foot b { color: #fff; font-family: var(--display); font-size: 17px; }
+.demo-flag { color: var(--accent); }
+
+/* ── 관리자 ── */
+.admin { display: grid; grid-template-columns: 210px 1fr; min-height: calc(100vh - 120px); }
+.side { background: var(--night); color: #fff; padding: 22px 12px; display: grid; align-content: start; gap: 2px; }
+.side .who { font-size: 12px; color: #9a9b97; padding: 0 10px 14px; }
+.side button { background: none; border: 0; color: #d7d7d3; text-align: left; padding: 11px 12px; cursor: pointer; font-weight: 500; display: flex; justify-content: space-between; }
+.side button.on { background: #2a2d30; color: #fff; box-shadow: inset 3px 0 0 var(--accent); }
+.side button:hover { color: #fff; }
+.side .cnt { background: var(--accent); color: var(--accent-ink); font-size: 11px; font-weight: 700; padding: 0 7px; border-radius: 10px; }
+.amain { padding: 30px max(16px, env(safe-area-inset-right, 0px)) 80px 30px; min-width: 0; }
+.amain h1 { font-family: var(--display); font-weight: 600; font-size: 26px; margin: 0 0 4px; }
+.ahead { display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
+.toolbar select, .toolbar input { border: 1px solid var(--line); background: var(--card); padding: 8px 10px; min-width: 0; }
+@media (max-width: 860px) {
+  .admin { grid-template-columns: 1fr; }
+  .side { grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; padding: 8px max(16px, env(safe-area-inset-left, 0px)); }
+  .side .who { display: none; }
+  .side button.on { box-shadow: inset 0 -3px 0 var(--accent); }
+  .amain { padding-left: max(16px, env(safe-area-inset-left, 0px)); }
+}
+.alist { display: grid; gap: 8px; }
+.arow { display: grid; grid-template-columns: 112px 1fr auto; gap: 14px; align-items: center; background: var(--card); border: 1px solid var(--line); padding: 10px; }
+.arow .th { aspect-ratio: 16/9; width: 100%; background: #333 center/cover; }
+.arow .t { font-weight: 700; min-width: 0; }
+.arow .s { font-size: 13px; color: var(--muted); }
+.arow .acts { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+@media (max-width: 600px) { .arow { grid-template-columns: 80px 1fr; } .arow .acts { grid-column: 1 / -1; justify-content: flex-start; } }
+.lrow { display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; background: var(--card); border: 1px solid var(--line); padding: 10px 12px; }
+.lrow .no { font-weight: 700; color: var(--muted); text-align: center; font-variant-numeric: tabular-nums; }
+.lrow .nm { min-width: 0; }
+.lrow .nm div:first-child { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lrow .acts { display: flex; gap: 4px; }
+.ib { min-width: 34px; height: 32px; border: 1px solid var(--line); background: var(--card); cursor: pointer; font-size: 13px; padding: 0 9px; }
+.ib:hover:not(:disabled) { border-color: var(--ink); }
+.ib:disabled { opacity: .3; cursor: default; }
+.ib.del:hover:not(:disabled) { border-color: var(--warn); color: var(--warn); }
+.drop { border: 1.5px dashed #c7c6bf; background: var(--card); padding: 22px; text-align: center; cursor: pointer; color: var(--muted); }
+.drop.over, .drop:hover { border-color: var(--ink); color: var(--ink); }
+.drop b { color: var(--ink); }
+.upq { display: grid; gap: 6px; margin-top: 10px; }
+.upi { background: var(--card); border: 1px solid var(--line); padding: 8px 12px; font-size: 13px; display: grid; gap: 6px; }
+.upi .pbar { height: 5px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 22px; }
+.stat { background: var(--card); border: 1px solid var(--line); padding: 14px 16px; }
+.stat b { display: block; font-size: 24px; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 12px; color: var(--muted); }
+@media (max-width: 700px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+.enroll-group { margin-top: 10px; }
+.enroll-group h4 { margin: 12px 0 6px; font-size: 13px; color: var(--muted); }
+.enroll-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--line); background: var(--card); margin-bottom: 4px; cursor: pointer; }
+.enroll-item.on { border-color: var(--ink); background: var(--tint); }
+.enroll-item .prog { margin-left: auto; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* 모달 · 알림 */
+.modal-bg { position: fixed; inset: 0; background: rgba(15,16,17,.55); z-index: 100; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.modal { background: var(--card); width: min(620px, 100%); max-height: 90vh; overflow: auto; padding: 26px; }
+.modal h3 { font-family: var(--display); font-weight: 600; font-size: 21px; margin: 0 0 18px; }
+.modal .acts { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--night); color: #fff; padding: 11px 20px; z-index: 200; font-weight: 500; }
+.demo-box { background: var(--tint); border: 1px solid #a9dcc3; padding: 14px 16px; font-size: 13px; margin-top: 18px; }
+.demo-box b { display: block; margin-bottom: 4px; }
+.demo-box button { background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; font-weight: 700; }
+.login-box { max-width: 420px; margin: 0 auto; }
+.thumb-prev { aspect-ratio: 16/9; width: 200px; max-width: 100%; background: #333 center/cover; border: 1px solid var(--line); }
+.dswitch { position: fixed; left: max(12px, env(safe-area-inset-left, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 90; display: flex; align-items: center; gap: 2px; background: #111; color: #aaa; font-size: 12px; padding: 4px 4px 4px 10px; border-radius: 999px; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+.dswitch span { margin-right: 4px; }
+.dswitch a { color: #fff; text-decoration: none; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; font-weight: 700; }
+.dswitch a.on { background: #fff; color: #111; }
+/* 시안 C 다듬기: 각진 모서리 · 두꺼운 선 */
+.wrap { max-width: 1180px; margin: 0; padding-left: 44px; }
+@media (max-width: 900px) { .wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); } }
+.btn { border-width: 2px; }
+.btn.yellow { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.yellow:hover { background: #c42f1c; }
+.band { background: transparent; color: var(--ink); border-bottom: 2px solid var(--ink); }
+.band .wrap { padding-block: 54px 26px; }
+.band small { color: var(--accent); letter-spacing: 3px; }
+.band h1 { font-family: var(--display); font-weight: 400; font-size: clamp(36px, 5vw, 58px); letter-spacing: -1px; margin: 8px 0 0; }
+.ccard { border-width: 2px; border-color: var(--ink); }
+.ccard .tag.mine { background: var(--accent); color: #fff; }
+.chip.on { background: var(--accent); border-color: var(--accent); }
+.board { border-top-width: 3px; }
+.foot { background: var(--paper); color: var(--muted); border-top: 2px solid var(--ink); }
+.foot b { font-family: var(--display); font-weight: 400; color: var(--ink); font-size: 22px; }
+.demo-flag { color: var(--accent); }
+.admin { grid-template-columns: 1fr; min-height: 0; }
+.side { grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; background: transparent; color: var(--ink); border-bottom: 2px solid var(--ink); padding: 0 0 0 44px; gap: 0; }
+.side .who { display: none; }
+.side button { color: var(--muted); padding: 16px 16px; font-weight: 700; }
+.side button.on { background: transparent; color: var(--ink); box-shadow: inset 0 -4px 0 var(--accent); }
+.side .cnt { background: var(--accent); color: #fff; margin-left: 6px; }
+.amain { padding-left: 44px; }
+@media (max-width: 900px) { .side { padding-left: max(16px, env(safe-area-inset-left, 0px)); } .amain { padding-left: max(16px, env(safe-area-inset-left, 0px)); } }
+.lesson.on { background: var(--tint); }
+.stat b { font-family: var(--display); font-weight: 400; font-size: 30px; }
+.dswitch { left: auto; right: max(12px, env(safe-area-inset-right, 0px)); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div id="app"></div>
+
+<script>
+'use strict';
+// ════════════════════════════════════════════
+//  저장소 (시연판: 이 브라우저에 저장 · 실제 납품판은 서버 데이터베이스로 교체)
+// ════════════════════════════════════════════
+const KEY = 'academy_demo_v1';
+// 시안 구분 (같은 데이터를 시안 A·B·C가 함께 씀)
+const DESIGN = 'C';
+const MEDIA_BASE = '../';
+const DESIGN_LINKS = { A: '../', B: '../b/', C: '../c/' };
+const layout = (head, body) => `<div class="shell">${head}<div class="content">${body}</div></div>`;
+let DB = null;
+function load() { try { const r = localStorage.getItem(KEY); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) { toast('저장 공간이 부족해 일부 내용이 저장되지 않았어요'); } }
+let SESSION = null;
+function loadSession() { try { SESSION = JSON.parse(sessionStorage.getItem(KEY + '_s') || 'null'); } catch (e) { SESSION = null; } }
+function saveSession() { try { sessionStorage.setItem(KEY + '_s', JSON.stringify(SESSION)); } catch (e) {} }
+
+// 영상 파일 보관 (IndexedDB)
+const IDB = {
+  db: null,
+  open() {
+    if (this.db) return Promise.resolve(this.db);
+    return new Promise((res, rej) => {
+      try {
+        const r = indexedDB.open('academy_demo_media', 1);
+        r.onupgradeneeded = () => r.result.createObjectStore('files');
+        r.onsuccess = () => { this.db = r.result; res(this.db); };
+        r.onerror = () => rej(r.error);
+      } catch (e) { rej(e); }
+    });
+  },
+  async put(k, blob) { const d = await this.open(); return new Promise((res, rej) => { const t = d.transaction('files', 'readwrite'); t.objectStore('files').put(blob, k); t.oncomplete = res; t.onerror = () => rej(t.error); }); },
+  async get(k) { const d = await this.open(); return new Promise((res, rej) => { const q = d.transaction('files').objectStore('files').get(k); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); }); },
+  async del(k) { try { const d = await this.open(); d.transaction('files', 'readwrite').objectStore('files').delete(k); } catch (e) {} },
+  async clear() { try { const d = await this.open(); d.transaction('files', 'readwrite').objectStore('files').clear(); } catch (e) {} }
+};
+
+const uid = () => Math.random().toString(36).slice(2, 10);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+const daysAgo = (n) => { const d = new Date(Date.now() - n * 864e5); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+const fmtSize = (b) => b >= 1073741824 ? (b / 1073741824).toFixed(2) + 'GB' : Math.max(1, Math.round(b / 1048576)) + 'MB';
+
+// ════════════════════════════════════════════
+//  시연용 기본 데이터
+// ════════════════════════════════════════════
+function seed() {
+  const b1 = 'br1', b2 = 'br2';
+  const demo = (n, title) => ({ id: uid(), title, src: { type: 'file', path: `media/lesson${n}.mp4` }, duration: 28 });
+  const c = (branchId, grade, title, teacher, color, lessons, desc) => ({ id: uid(), branchId, grade, title, teacher, color, thumb: null, desc, createdAt: daysAgo(10), lessons });
+  const courses = [
+    c(b1, '고1', '세쌍둥이 공통수학1 기본개념', '한지우 원장T', '#2d3a34', [demo(1, '1강. 다항식의 덧셈과 뺄셈'), demo(2, '2강. 곱셈 공식'), demo(3, '3강. 인수분해')], '공통수학1 전 범위를 개념 중심으로 정리합니다. 매 강의 끝에 확인 문제가 있습니다.'),
+    c(b1, '고1', '공통수학1 내신 대비 심화', '서민호T', '#3b2f2a', [demo(3, '1강. 인수분해 심화'), demo(2, '2강. 곱셈 공식 응용')], '학교별 기출 유형을 중심으로 심화 문제를 풉니다.'),
+    c(b1, '고2', '대수 개념 완성', '한지우 원장T', '#2a3140', [demo(1, '1강. 지수와 로그 개념'), demo(2, '2강. 로그의 성질')], '지수·로그부터 수열까지 대수 전 단원 개념 강의입니다.'),
+    c(b1, '중3', '중3 2학기 선행 기본', '윤채원T', '#33402b', [demo(1, '1강. 이차함수 그래프'), demo(2, '2강. 꼭짓점과 축')], '중3 2학기 이차함수·삼각비를 미리 정리합니다.'),
+    c(b2, '고1', '공통수학1 기본개념', '서민호T', '#40302a', [demo(1, '1강. 다항식의 연산'), demo(3, '2강. 인수분해')], '신관 고1 정규반 수업 복습 강의입니다.'),
+    c(b2, '중2', '중2 일차함수 집중', '윤채원T', '#2b3a40', [demo(2, '1강. 일차함수의 뜻'), demo(1, '2강. 기울기와 절편')], '일차함수 단원을 그래프 중심으로 정리합니다.'),
+  ];
+  const st = (name, loginId, branchId, grade, phone, idx) => ({ id: uid(), name, loginId, pw: '1234', branchId, grade, phone, courseIds: idx.map((i) => courses[i].id), createdAt: daysAgo(7) });
+  const students = [
+    st('김하늘', 'haneul', b1, '고1', '010-1234-5678', [0, 1]),
+    st('이도윤', 'doyun', b1, '고2', '010-2345-6789', [2]),
+    st('박서연', 'seoyeon', b2, '중2', '010-3456-7890', [5]),
+  ];
+  const progress = {};
+  progress[students[0].id] = { [courses[0].lessons[0].id]: 100, [courses[0].lessons[1].id]: 46 };
+  progress[students[1].id] = { [courses[2].lessons[0].id]: 100 };
+  return {
+    settings: {
+      name: '새봄수학학원',
+      kicker: '개념이 단단해지면 성적은 따라옵니다.',
+      title1: '깊이 있는 수업',
+      title2: '새봄수학학원',
+      cardAbout: '깊이 있는 수업\n새봄수학학원',
+      cardVideo: '나에게 맞는 강의를\n찾아보세요',
+      cardQna: '궁금한 점을 남겨주시면\n빠르게 답변드립니다',
+      hours: '월–금 14:00–22:00 · 토 10:00–18:00 상담 가능',
+      address: '경기도 ○○시 ○○로 123, 4층',
+      branches: [{ id: b1, name: '본관', phone: '031-123-4567' }, { id: b2, name: '신관', phone: '031-765-4321' }],
+      grades: ['중1', '중2', '중3', '고1', '고2', '고3'],
+      consultEnabled: true,
+      heroImage: null,
+      about: '새봄수학학원은 중·고등 수학 전문 학원입니다.\n\n개념을 정확히 이해하고, 스스로 풀어내는 힘을 기르는 수업을 합니다. 수업이 끝난 뒤에도 강의 영상으로 언제든 다시 복습할 수 있습니다.',
+      teachers: [
+        { name: '한지우 원장', subject: '고등 수학 · 수리논술', desc: '수학교육과 졸업, 고등부 강의 15년' },
+        { name: '서민호', subject: '고등 수학', desc: '고1·고2 내신 전담' },
+        { name: '윤채원', subject: '중등 수학', desc: '중등 선행·내신 전담' },
+      ],
+    },
+    admins: [{ loginId: 'admin', pw: '1234', name: '원장' }],
+    courses, students, progress,
+    qna: [
+      { id: uid(), title: '보충 영상은 언제까지 볼 수 있나요?', body: '지난주 결석해서 영상으로 보려고 하는데 기간이 있나요?', author: '김하늘', studentId: students[0].id, secret: false, createdAt: daysAgo(3), answer: { body: '수강 중인 강좌의 영상은 기간 제한 없이 볼 수 있습니다. 결석한 차시는 꼭 확인 문제까지 풀어 오세요.', at: daysAgo(2) } },
+      { id: uid(), title: '고2 겨울방학 특강 문의드립니다', body: '시간표와 수강료가 궁금합니다.', author: '학부모', studentId: null, secret: true, guestPw: '0000', createdAt: daysAgo(1), answer: null },
+      { id: uid(), title: '2강 확인 문제 답이 이해가 안 돼요', body: '(2x+3)² 에서 12x 가 어떻게 나오는지 모르겠어요.', author: '이도윤', studentId: students[1].id, secret: false, createdAt: today(), answer: null },
+    ],
+    notices: [
+      { id: uid(), title: '겨울방학 특강 시간표 안내', body: '겨울방학 특강 시간표가 확정되었습니다. 학년별 시간표는 상담실에서 받아보실 수 있습니다.', createdAt: daysAgo(1) },
+      { id: uid(), title: '온라인 강의실 오픈 안내', body: '이제 홈페이지에서 수강 중인 강좌의 영상을 언제든 다시 볼 수 있습니다. 로그인 아이디와 비밀번호는 담당 선생님께 받아주세요.', createdAt: daysAgo(6) },
+      { id: uid(), title: '2학기 기말고사 대비 일정', body: '학교별 기말고사 대비 일정을 안내드립니다.', createdAt: daysAgo(12) },
+    ],
+    consults: [
+      { id: uid(), name: '정유진 학부모', phone: '010-5555-1212', grade: '중3', message: '고등 선행 상담 원합니다.', createdAt: daysAgo(1), done: false },
+    ],
+  };
+}
+
+// ════════════════════════════════════════════
+//  이미지 · 썸네일
+// ════════════════════════════════════════════
+const thumbCache = new Map();
+function autoThumb(course) {
+  const k = course.id + course.title + course.color;
+  if (thumbCache.has(k)) return thumbCache.get(k);
+  const cv = document.createElement('canvas'); cv.width = 640; cv.height = 360;
+  const x = cv.getContext('2d');
+  x.fillStyle = course.color || '#2d3a34'; x.fillRect(0, 0, 640, 360);
+  const g = x.createRadialGradient(170, 90, 10, 170, 90, 420); g.addColorStop(0, 'rgba(255,255,255,.12)'); g.addColorStop(1, 'rgba(0,0,0,.25)');
+  x.fillStyle = g; x.fillRect(0, 0, 640, 360);
+  x.fillStyle = 'rgba(255,255,255,.07)'; x.font = 'italic 120px "IBM Plex Sans KR", sans-serif'; x.fillText('∑ x²', 330, 330);
+  x.fillStyle = '#6fd3a8'; x.fillRect(40, 60, 46, 5);
+  x.fillStyle = '#ffffff'; x.font = '700 34px "IBM Plex Sans KR", sans-serif';
+  const words = course.title.split(' '); let line = '', y = 120;
+  for (const w of words) { const t = line ? line + ' ' + w : w; if (x.measureText(t).width > 540) { x.fillText(line, 40, y); line = w; y += 46; } else line = t; }
+  x.fillText(line, 40, y);
+  x.font = '500 22px "Noto Sans KR", sans-serif'; x.fillStyle = 'rgba(255,255,255,.75)'; x.fillText(course.teacher || '', 40, 318);
+  const url = cv.toDataURL('image/jpeg', 0.82); thumbCache.set(k, url); return url;
+}
+const thumbOf = (c) => c.thumb || autoThumb(c);
+
+let heroDefault = null;
+function heroBg() {
+  if (DB.settings.heroImage) return DB.settings.heroImage;
+  if (heroDefault) return heroDefault;
+  // 기본 대표 이미지: 판서가 남은 칠판
+  const cv = document.createElement('canvas'); cv.width = 1600; cv.height = 900;
+  const x = cv.getContext('2d');
+  x.fillStyle = '#26382f'; x.fillRect(0, 0, 1600, 900);
+  for (let i = 0; i < 2600; i++) { x.fillStyle = `rgba(255,255,255,${Math.random() * 0.035})`; x.fillRect(Math.random() * 1600, Math.random() * 900, Math.random() * 60, 1); }
+  const f = ['f(x) = ax² + bx + c', 'lim  (1 + 1/n)ⁿ = e', '∫₀¹ x² dx = 1/3', 'sin²θ + cos²θ = 1', 'aₙ = a₁ + (n − 1)d', 'log₂ 8 = 3', 'x = (−b ± √(b² − 4ac)) / 2a', '∑ k = n(n + 1)/2', '(a + b)² = a² + 2ab + b²', 'y = 2x − 3'];
+  x.textBaseline = 'middle';
+  f.forEach((t, i) => {
+    x.save(); x.translate(80 + (i % 3) * 520 + Math.random() * 60, 90 + Math.floor(i / 3) * 210 + Math.random() * 40); x.rotate((Math.random() - 0.5) * 0.06);
+    x.fillStyle = `rgba(255,255,255,${0.22 + Math.random() * 0.2})`; x.font = `italic ${38 + Math.random() * 18}px "IBM Plex Sans KR", sans-serif`; x.fillText(t, 0, 0); x.restore();
+  });
+  x.strokeStyle = 'rgba(255,255,255,.18)'; x.lineWidth = 2; x.beginPath(); x.moveTo(1150, 760); for (let t = 0; t <= 300; t += 5) x.lineTo(1150 + t, 760 - (t * t) / 260); x.stroke();
+  heroDefault = cv.toDataURL('image/jpeg', 0.8); return heroDefault;
+}
+function readImage(file, maxW, maxH, q = 0.82) {
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => { const im = new Image(); im.onload = () => { const r = Math.min(1, maxW / im.width, maxH / im.height); const cv = document.createElement('canvas'); cv.width = Math.round(im.width * r); cv.height = Math.round(im.height * r); cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height); res(cv.toDataURL('image/jpeg', q)); }; im.onerror = rej; im.src = fr.result; };
+    fr.onerror = rej; fr.readAsDataURL(file);
+  });
+}
+
+// ════════════════════════════════════════════
+//  공통 도우미
+// ════════════════════════════════════════════
+const $ = (s, r = document) => r.querySelector(s);
+const S = () => DB.settings;
+const branchName = (id) => (S().branches.find((b) => b.id === id) || {}).name || '';
+const multiBranch = () => S().branches.length > 1;
+const isAdmin = () => SESSION && SESSION.role === 'admin';
+const me = () => SESSION && SESSION.role === 'student' ? DB.students.find((s) => s.id === SESSION.id) : null;
+const courseById = (id) => DB.courses.find((c) => c.id === id);
+function lessonPct(studentId, lessonId) { return Math.round((DB.progress[studentId] || {})[lessonId] || 0); }
+function coursePct(studentId, c) { if (!c.lessons.length) return 0; const done = c.lessons.filter((l) => lessonPct(studentId, l.id) >= 90).length; return Math.round((done / c.lessons.length) * 100); }
+
+let toastTimer;
+function toast(msg) { let t = $('.toast'); if (!t) { t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); } t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 2400); }
+function modal(html, onMount) {
+  closeModal();
+  const bg = document.createElement('div'); bg.className = 'modal-bg'; bg.innerHTML = `<div class="modal" role="dialog" aria-modal="true">${html}</div>`;
+  bg.addEventListener('mousedown', (e) => { if (e.target === bg) closeModal(); });
+  document.body.appendChild(bg); if (onMount) onMount(bg.firstElementChild);
+  const f = bg.querySelector('input,select,textarea'); if (f) f.focus();
+}
+function closeModal() { document.querySelectorAll('.modal-bg').forEach((m) => m.remove()); }
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+function ask(msg, okLabel, onOk, danger = true) {
+  modal(`<h3>확인</h3><p style="white-space:pre-wrap;margin:0">${esc(msg)}</p><div class="acts"><button class="btn line" id="askNo">취소</button><button class="btn ${danger ? 'danger' : ''}" id="askOk">${esc(okLabel)}</button></div>`, (m) => {
+    m.querySelector('#askNo').onclick = closeModal;
+    m.querySelector('#askOk').onclick = () => { closeModal(); onOk(); };
+  });
+}
+
+// ════════════════════════════════════════════
+//  화면 이동
+// ════════════════════════════════════════════
+let ROUTE = { page: 'home', p: {} };
+function go(page, p = {}) { ROUTE = { page, p }; stopPlayer(); render(); window.scrollTo(0, 0); }
+const NAV = () => [['about', '학원소개'], ['courses', '동영상강의'], ['qna', 'Q&A'], ['notice', '공지사항']].concat(S().consultEnabled ? [['consult', '상담신청']] : []);
+
+function header() {
+  const st = me(); const s = S();
+  const navs = NAV().map(([k, l]) => `<button data-go="${k}" class="${ROUTE.page === k || (k === 'courses' && ROUTE.page === 'course') || (k === 'qna' && ROUTE.page.startsWith('qna')) || (k === 'notice' && ROUTE.page === 'noticePost') ? 'on' : ''}">${l}</button>`).join('');
+  const act = isAdmin()
+    ? `<button class="btn yellow sm" data-go="admin">관리자 화면</button><button class="btn line sm" data-act="logout">로그아웃</button>`
+    : st ? `<div style="color:#fff">${esc(st.name)} 학생</div><button class="btn yellow sm" data-go="my">내 강의실</button><button class="btn line sm" data-act="logout">로그아웃</button>`
+      : `<button class="btn yellow sm" data-go="login">강의실 로그인</button>`;
+  return `<aside class="rail" aria-label="사이트 메뉴">
+      <button class="logo" data-go="home" aria-label="${esc(s.name)} 첫 화면"><i></i><b>${esc(s.name)}</b><small>MATH ACADEMY</small></button>
+      <nav class="rnav" aria-label="주 메뉴">${navs}</nav>
+      <div class="rfoot">${s.branches.map((b) => `<div>${multiBranch() ? esc(b.name) + ' ' : ''}<span class="tel">${esc(b.phone)}</span></div>`).join('')}${act}</div>
+    </aside>
+    <header class="mtop"><button class="logo" data-go="home"><i></i>${esc(s.name)}</button><button class="burger" data-act="burger" aria-expanded="false">메뉴</button></header>
+    <div class="mnav" id="mnav">${navs}${isAdmin() ? '<button data-go="admin">관리자 화면</button><button data-act="logout">로그아웃</button>' : st ? '<button data-go="my">내 강의실</button><button data-act="logout">로그아웃</button>' : '<button data-go="login">강의실 로그인</button>'}</div>`;
+}
+function footer() {
+  const s = S();
+  return `<footer class="foot"><div class="wrap" style="padding-block:30px 70px;display:grid;gap:4px">
+    <b>${esc(s.name)}</b>
+    <div>${esc(s.address)}</div>
+    <div>${s.branches.map((b) => `${esc(b.name)} ${esc(b.phone)}`).join(' · ')} · ${esc(s.hours)}</div>
+    <div class="demo-flag">이 사이트는 학원 홈페이지 시안입니다. 입력한 내용은 지금 보고 계신 브라우저에만 저장됩니다.</div>
+  </div></footer>`;
+}
+function switcher() {
+  return `<nav class="dswitch" aria-label="시안 바꿔보기"><span>시안</span>${Object.entries(DESIGN_LINKS).map(([k, h]) => `<a href="${h}" class="${k === DESIGN ? 'on' : ''}">${k}</a>`).join('')}</nav>`;
+}
+function band(kicker, title) { return `<section class="band"><div class="wrap"><small>${esc(kicker)}</small><h1>${esc(title)}</h1></div></section>`; }
+
+
+function render() {
+  const app = $('#app');
+  if (ROUTE.page === 'admin') { if (!isAdmin()) { ROUTE = { page: 'login', p: {} }; } else { app.innerHTML = layout(header(), adminView()) + switcher(); bindAdmin(); return; } }
+  const views = { home: homeView, about: aboutView, courses: coursesView, course: courseView, qna: qnaView, qnaPost: qnaPostView, qnaWrite: qnaWriteView, notice: noticeView, noticePost: noticePostView, consult: consultView, login: loginView, my: myView };
+  const v = (views[ROUTE.page] || homeView)();
+  app.innerHTML = layout(header(), (ROUTE.page === 'home' ? v : `<main>${v}</main>`) + footer()) + switcher();
+  if (ROUTE.page === 'course') mountPlayer();
+  if (ROUTE.page === 'login') { const i = $('#lgId'); if (i) i.focus(); }
+}
+
+// ════════════════════════════════════════════
+//  첫 화면
+// ════════════════════════════════════════════
+function homeView() {
+  const s = S();
+  const notices = DB.notices.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 5);
+  const latest = DB.courses.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 3);
+  const st = me();
+  const one = (t) => esc(String(t || '').split('\n').join(' '));
+  return `<div class="cwrap">
+    <section class="chero">
+      <div class="chero-txt">
+        <span class="k">${esc(s.kicker)}</span>
+        <h1>${esc(s.title1)}<em>${esc(s.title2)}</em></h1>
+        <p>${one(s.cardAbout)}</p>
+        <div class="cta">
+          <button class="btn yellow" data-go="${isAdmin() ? 'admin' : st ? 'my' : 'login'}">${isAdmin() ? '관리자 화면' : st ? '내 강의실 입장' : '강의실 로그인'}</button>
+          ${s.consultEnabled ? '<button class="btn" data-go="consult">상담 신청</button>' : ''}
+        </div>
+      </div>
+      <div class="chero-img"><div class="ph" style="background-image:url('${heroBg()}')"></div><div class="cap"><b>${DB.courses.length}개 강좌 · ${s.teachers.length}명의 강사</b>${s.branches.map((b) => esc(b.name)).join(' · ')}</div></div>
+    </section>
+    <nav class="cidx" aria-label="바로가기">
+      <button data-go="about"><b>학원소개</b><small>${one(s.cardAbout)}</small><span class="arr">보기 →</span></button>
+      <button data-go="courses"><b>동영상강의</b><small>${one(s.cardVideo)}</small><span class="arr">보기 →</span></button>
+      <button data-go="qna"><b>Q&amp;A</b><small>${one(s.cardQna)}</small><span class="arr">보기 →</span></button>
+      <button data-go="notice"><b>공지사항</b><small>${notices[0] ? esc(notices[0].title) : '학원 소식'}</small><span class="arr">보기 →</span></button>
+    </nav>
+    <section class="crow">
+      <div><h2>공지사항 <button data-go="notice">전체</button></h2>
+        <div class="nlist">${notices.length ? notices.map((n) => `<button data-go="noticePost" data-id="${n.id}"><time>${n.createdAt}</time><span>${esc(n.title)}</span></button>`).join('') : '<span class="muted">등록된 공지사항이 없습니다.</span>'}</div>
+      </div>
+      <div><h2>상담 문의</h2>
+        ${s.branches.map((b) => `<div class="tel">${multiBranch() ? `<small>${esc(b.name)}</small>` : ''}${esc(b.phone)}</div>`).join('')}
+        <div class="hours">${esc(s.hours)}</div>
+        <div class="hours">${esc(s.address)}</div>
+      </div>
+    </section>
+    ${latest.length ? `<section class="csec"><h2>개설 강좌 <button data-go="courses">전체 강좌 →</button></h2><div class="cgrid">${latest.map(courseCard).join('')}</div></section>` : '<div style="height:60px"></div>'}
+  </div>`;
+}
+
+// ════════════════════════════════════════════
+//  학원소개
+// ════════════════════════════════════════════
+function aboutView() {
+  const s = S();
+  return band('ABOUT', '학원소개') + `<div class="wrap page">
+    <div class="panel" style="white-space:pre-wrap;max-width:760px">${esc(s.about)}</div>
+    <div class="section"><h2>강사진</h2>
+      <div class="cgrid">${s.teachers.map((t) => `<div class="panel"><div style="font-family:var(--display);font-size:20px;font-weight:600">${esc(t.name)}</div><div style="color:var(--gold);font-weight:700;font-size:13px;margin:4px 0 8px">${esc(t.subject)}</div><div class="muted" style="font-size:14px">${esc(t.desc)}</div></div>`).join('')}</div>
+    </div>
+    <div class="section"><h2>오시는 길 · 연락처</h2>
+      <div class="panel" style="display:grid;gap:6px"><div>${esc(s.address)}</div>${s.branches.map((b) => `<div><b>${esc(b.name)}</b> ${esc(b.phone)}</div>`).join('')}<div class="muted">${esc(s.hours)}</div></div>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════
+//  동영상강의 (관 → 학년 → 강좌)
+// ════════════════════════════════════════════
+const filt = { branch: null, grade: '전체' };
+function courseCard(c) {
+  const st = me(); const mine = st && st.courseIds.includes(c.id);
+  return `<button class="ccard" data-go="course" data-id="${c.id}">
+    <div class="th" style="background-image:url('${thumbOf(c)}')"><span class="tag">${multiBranch() ? esc(branchName(c.branchId)) + ' · ' : ''}${esc(c.grade)}</span>${mine ? '<span class="tag mine">수강중</span>' : ''}</div>
+    ${mine ? `<div class="pbar"><i style="width:${coursePct(st.id, c)}%"></i></div>` : ''}
+    <div class="bd"><div class="t">${esc(c.title)}</div><div class="s">${esc(c.teacher)} · ${c.lessons.length}강</div></div>
+  </button>`;
+}
+function coursesView() {
+  const s = S();
+  if (!filt.branch || !s.branches.some((b) => b.id === filt.branch)) filt.branch = s.branches[0].id;
+  const list = DB.courses.filter((c) => c.branchId === filt.branch && (filt.grade === '전체' || c.grade === filt.grade));
+  return band('VIDEO LECTURE', '동영상강의') + `<div class="wrap page">
+    ${multiBranch() ? `<div class="lbl">관</div><div class="chips">${s.branches.map((b) => `<button class="chip ${b.id === filt.branch ? 'on' : ''}" data-act="fBranch" data-id="${b.id}">${esc(b.name)}</button>`).join('')}</div>` : ''}
+    <div class="lbl">학년</div><div class="chips">${['전체'].concat(s.grades).map((g) => `<button class="chip ${g === filt.grade ? 'on' : ''}" data-act="fGrade" data-id="${esc(g)}">${esc(g)}</button>`).join('')}</div>
+    <div style="height:24px"></div>
+    ${list.length ? `<div class="cgrid">${list.map(courseCard).join('')}</div>` : '<div class="empty">개설된 강좌가 없습니다.</div>'}
+    ${!SESSION ? `<p class="muted" style="margin-top:24px;font-size:14px">강의 영상은 수강신청된 학생만 볼 수 있습니다. <button class="btn line sm" data-go="login">로그인</button></p>` : ''}
+  </div>`;
+}
+
+let currentLesson = null;
+function courseView() {
+  const c = courseById(ROUTE.p.id);
+  if (!c) return band('VIDEO LECTURE', '강좌를 찾을 수 없습니다') + `<div class="wrap page"><button class="btn line" data-go="courses">강좌 목록으로</button></div>`;
+  const st = me(); const can = isAdmin() || (st && st.courseIds.includes(c.id));
+  if (!currentLesson || !c.lessons.some((l) => l.id === currentLesson)) currentLesson = c.lessons[0] ? c.lessons[0].id : null;
+  const head = band(`${multiBranch() ? branchName(c.branchId) + ' · ' : ''}${c.grade}`, c.title);
+  const info = `<div class="panel"><div style="font-weight:700">${esc(c.teacher)}</div><div class="muted" style="font-size:14px;margin-top:6px;white-space:pre-wrap">${esc(c.desc || '')}</div><div style="margin-top:12px;font-size:13px" class="muted">총 ${c.lessons.length}강</div>${st && can ? `<div style="margin-top:12px"><div class="pbar"><i style="width:${coursePct(st.id, c)}%"></i></div><div style="font-size:12px;margin-top:4px" class="muted">완료 ${coursePct(st.id, c)}%</div></div>` : ''}</div>`;
+  if (!can) {
+    return head + `<div class="wrap page"><div class="course-top"><div class="lock"><h3>수강신청된 학생만 볼 수 있는 강좌입니다</h3><p class="muted">${SESSION ? '수강을 원하면 학원에 문의해주세요.' : '학원에서 받은 아이디로 로그인해주세요.'}</p>${SESSION ? '' : '<button class="btn" data-go="login">로그인</button>'}</div>${info}</div>
+      <div class="section"><h2>강의 목차</h2><div class="lessons">${c.lessons.map((l, i) => `<div class="lesson" style="cursor:default"><span class="no">${i + 1}</span><span class="nm">${esc(l.title)}</span><span class="badge wait">잠김</span></div>`).join('')}</div></div></div>`;
+  }
+  const lessonRows = c.lessons.map((l, i) => {
+    let badge = '';
+    if (st) { const p = lessonPct(st.id, l.id); badge = p >= 90 ? '<span class="badge done">완료</span>' : p > 0 ? `<span class="badge ing">${p}%</span>` : '<span class="badge wait">미시청</span>'; }
+    return `<button class="lesson ${l.id === currentLesson ? 'on' : ''}" data-act="pickLesson" data-id="${l.id}"><span class="no">${i + 1}</span><span class="nm">${esc(l.title)}</span>${badge}</button>`;
+  }).join('');
+  return head + `<div class="wrap page"><div class="course-top">
+    <div><div class="player" id="player">${c.lessons.length ? '영상을 불러오는 중...' : '아직 올라온 영상이 없습니다.'}</div><div id="nowTitle" style="font-weight:700;margin-top:10px"></div></div>
+    ${info}</div>
+    <div class="section"><h2>강의 목차</h2>${c.lessons.length ? `<div class="lessons">${lessonRows}</div>` : '<div class="empty">아직 올라온 영상이 없습니다.</div>'}</div>
+    ${isAdmin() ? `<p style="margin-top:20px"><button class="btn line" data-go="admin" data-tab="courseEdit" data-id="${c.id}">관리자 화면에서 이 강좌 편집</button></p>` : ''}
+  </div>`;
+}
+let playerUrl = null;
+function stopPlayer() { const v = $('#player video'); if (v) v.pause(); if (playerUrl) { URL.revokeObjectURL(playerUrl); playerUrl = null; } }
+async function mountPlayer() {
+  const c = courseById(ROUTE.p.id); const box = $('#player');
+  if (!c || !box || !currentLesson) return;
+  const l = c.lessons.find((x) => x.id === currentLesson); if (!l) return;
+  $('#nowTitle').textContent = l.title;
+  let src = null;
+  if (l.src.type === 'file') src = MEDIA_BASE + l.src.path;
+  else if (l.src.type === 'idb') { try { const blob = await IDB.get(l.src.key); if (blob) { playerUrl = URL.createObjectURL(blob); src = playerUrl; } } catch (e) {} }
+  if (!src) { box.textContent = '이 영상 파일을 찾을 수 없습니다. (시연판은 영상을 올린 브라우저에서만 재생됩니다)'; return; }
+  box.innerHTML = `<video controls playsinline preload="metadata" src="${esc(src)}"></video>`;
+  const v = box.querySelector('video'); const st = me();
+  if (st) {
+    let last = 0;
+    v.addEventListener('timeupdate', () => {
+      if (!v.duration) return;
+      const p = Math.min(100, (v.currentTime / v.duration) * 100);
+      const prev = lessonPct(st.id, l.id);
+      if (p > prev && (p - last > 3 || p >= 90)) {
+        last = p; DB.progress[st.id] = DB.progress[st.id] || {}; DB.progress[st.id][l.id] = p >= 95 ? 100 : p; save();
+        const row = document.querySelector(`.lesson[data-id="${l.id}"] .badge`);
+        if (row) { const q = lessonPct(st.id, l.id); row.className = 'badge ' + (q >= 90 ? 'done' : 'ing'); row.textContent = q >= 90 ? '완료' : q + '%'; }
+      }
+    });
+    v.addEventListener('ended', () => { DB.progress[st.id] = DB.progress[st.id] || {}; DB.progress[st.id][l.id] = 100; save(); });
+  }
+}
+
+// ════════════════════════════════════════════
+//  내 강의실 (학생)
+// ════════════════════════════════════════════
+function myView() {
+  const st = me(); if (!st) { ROUTE.page = 'login'; return loginView(); }
+  const list = st.courseIds.map(courseById).filter(Boolean);
+  return band('MY CLASS', `${st.name} 학생의 강의실`) + `<div class="wrap page">
+    ${list.length ? `<div class="cgrid">${list.map(courseCard).join('')}</div>` : '<div class="empty">수강신청된 강좌가 없습니다. 학원에 문의해주세요.</div>'}
+  </div>`;
+}
+
+// ════════════════════════════════════════════
+//  로그인
+// ════════════════════════════════════════════
+function loginView() {
+  return band('LOGIN', '로그인') + `<div class="wrap page"><div class="login-box">
+    <form class="panel form" id="loginForm">
+      <div class="field"><label for="lgId">아이디</label><input id="lgId" autocomplete="username"></div>
+      <div class="field"><label for="lgPw">비밀번호</label><input id="lgPw" type="password" autocomplete="current-password"></div>
+      <div id="lgErr" style="color:var(--warn);font-size:13px" hidden></div>
+      <button class="btn" type="submit">로그인</button>
+      <div class="muted" style="font-size:13px">학생 아이디와 비밀번호는 학원에서 발급해드립니다.</div>
+    </form>
+    <div class="demo-box"><b>시연용 계정</b>
+      관리자 <button data-act="demoLogin" data-id="admin">admin / 1234</button><br>
+      학생 <button data-act="demoLogin" data-id="haneul">haneul / 1234</button> (김하늘 · 고1)
+    </div>
+  </div></div>`;
+}
+function doLogin(id, pw) {
+  const a = DB.admins.find((x) => x.loginId === id && x.pw === pw);
+  if (a) { SESSION = { role: 'admin', id: a.loginId }; saveSession(); go('admin', { tab: 'courses' }); return true; }
+  const s = DB.students.find((x) => x.loginId === id && x.pw === pw);
+  if (s) { SESSION = { role: 'student', id: s.id }; saveSession(); go('my'); return true; }
+  return false;
+}
+
+// ════════════════════════════════════════════
+//  Q&A
+// ════════════════════════════════════════════
+const canReadQna = (q) => !q.secret || isAdmin() || (me() && q.studentId === me().id) || unlockedQna.has(q.id);
+const unlockedQna = new Set();
+function qnaView() {
+  const list = DB.qna.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  return band('Q&A', '질문과 답변') + `<div class="wrap page">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="btn" data-go="qnaWrite">질문하기</button></div>
+    <div class="tbl"><table class="board"><thead><tr><th class="num">번호</th><th>제목</th><th>작성자</th><th>상태</th><th>날짜</th></tr></thead><tbody>
+    ${list.length ? list.map((q, i) => `<tr class="click" data-go="qnaPost" data-id="${q.id}"><td class="num">${list.length - i}</td><td>${q.secret ? '[비밀글] ' : ''}${esc(q.title)}</td><td>${esc(q.author)}</td><td class="st">${q.answer ? '<span class="badge done">답변완료</span>' : '<span class="badge wait">답변대기</span>'}</td><td class="date">${q.createdAt}</td></tr>`).join('') : '<tr><td colspan="5" class="empty">등록된 질문이 없습니다.</td></tr>'}
+    </tbody></table></div>
+  </div>`;
+}
+function qnaPostView() {
+  const q = DB.qna.find((x) => x.id === ROUTE.p.id);
+  if (!q) return band('Q&A', '글을 찾을 수 없습니다') + `<div class="wrap page"><button class="btn line" data-go="qna">목록으로</button></div>`;
+  if (!canReadQna(q)) {
+    return band('Q&A', '비밀글입니다') + `<div class="wrap page"><form class="panel form login-box" id="qnaUnlock" data-id="${q.id}">
+      <div>작성할 때 입력한 비밀번호를 입력해주세요.</div>
+      <div class="field"><label for="qPw">비밀번호</label><input id="qPw" type="password" inputmode="numeric"></div>
+      <div id="qPwErr" style="color:var(--warn);font-size:13px" hidden>비밀번호가 맞지 않습니다.</div>
+      <div style="display:flex;gap:8px"><button class="btn" type="submit">확인</button><button class="btn line" type="button" data-go="qna">목록으로</button></div></form></div>`;
+  }
+  return band('Q&A', '질문과 답변') + `<div class="wrap page"><article class="panel post">
+    <h2>${q.secret ? '[비밀글] ' : ''}${esc(q.title)}</h2>
+    <div class="meta">${esc(q.author)} · ${q.createdAt}</div>
+    <div class="body">${esc(q.body)}</div>
+    ${q.answer ? `<div class="answer"><b>${esc(S().name)} 답변 · ${q.answer.at}</b>${esc(q.answer.body)}</div>` : '<div class="answer"><b>답변 대기 중</b>확인 후 빠르게 답변드리겠습니다.</div>'}
+  </article><p style="margin-top:16px;display:flex;gap:8px"><button class="btn line" data-go="qna">목록으로</button>${isAdmin() ? `<button class="btn" data-go="admin" data-tab="qna" data-id="${q.id}">관리자 화면에서 답변</button>` : ''}</p></div>`;
+}
+function qnaWriteView() {
+  const st = me();
+  return band('Q&A', '질문하기') + `<div class="wrap page"><form class="panel form" id="qnaForm" style="max-width:760px">
+    <div class="two">
+      <div class="field"><label for="qAuthor">작성자</label><input id="qAuthor" value="${st ? esc(st.name) : ''}" ${st ? 'readonly' : ''} placeholder="이름"></div>
+      <div class="field"><label for="qSecretPw">비밀번호 (비밀글 확인용)</label><input id="qSecretPw" type="password" inputmode="numeric" placeholder="숫자 4자리"></div>
+    </div>
+    <div class="field"><label for="qTitle">제목</label><input id="qTitle" maxlength="80"></div>
+    <div class="field"><label for="qBody">내용</label><textarea id="qBody"></textarea></div>
+    <label class="check"><input type="checkbox" id="qSecret"> 비밀글로 작성 (작성자와 학원만 볼 수 있음)</label>
+    <div id="qErr" style="color:var(--warn);font-size:13px" hidden></div>
+    <div style="display:flex;gap:8px"><button class="btn" type="submit">등록</button><button class="btn line" type="button" data-go="qna">취소</button></div>
+  </form></div>`;
+}
+
+// ════════════════════════════════════════════
+//  공지사항 · 상담신청
+// ════════════════════════════════════════════
+function noticeView() {
+  const list = DB.notices.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  return band('NOTICE', '공지사항') + `<div class="wrap page"><div class="tbl"><table class="board"><thead><tr><th class="num">번호</th><th>제목</th><th>날짜</th></tr></thead><tbody>
+    ${list.length ? list.map((n, i) => `<tr class="click" data-go="noticePost" data-id="${n.id}"><td class="num">${list.length - i}</td><td>${esc(n.title)}</td><td class="date">${n.createdAt}</td></tr>`).join('') : '<tr><td colspan="3" class="empty">등록된 공지사항이 없습니다.</td></tr>'}
+  </tbody></table></div></div>`;
+}
+function noticePostView() {
+  const n = DB.notices.find((x) => x.id === ROUTE.p.id);
+  if (!n) return band('NOTICE', '글을 찾을 수 없습니다') + `<div class="wrap page"><button class="btn line" data-go="notice">목록으로</button></div>`;
+  return band('NOTICE', '공지사항') + `<div class="wrap page"><article class="panel post"><h2>${esc(n.title)}</h2><div class="meta">${n.createdAt}</div><div class="body">${esc(n.body)}</div></article><p style="margin-top:16px"><button class="btn line" data-go="notice">목록으로</button></p></div>`;
+}
+function consultView() {
+  if (!S().consultEnabled) return band('CONSULT', '상담신청') + `<div class="wrap page"><div class="empty">지금은 온라인 상담신청을 받지 않습니다. 전화로 문의해주세요.</div></div>`;
+  return band('CONSULT', '상담신청') + `<div class="wrap page"><form class="panel form" id="consultForm" style="max-width:640px">
+    <div class="two"><div class="field"><label for="cName">이름</label><input id="cName" placeholder="학부모 또는 학생 이름"></div>
+    <div class="field"><label for="cPhone">연락처</label><input id="cPhone" inputmode="tel" placeholder="010-0000-0000"></div></div>
+    <div class="field"><label for="cGrade">학년</label><select id="cGrade">${S().grades.map((g) => `<option>${esc(g)}</option>`).join('')}</select></div>
+    <div class="field"><label for="cMsg">상담 내용</label><textarea id="cMsg" placeholder="궁금한 점을 적어주세요"></textarea></div>
+    <div id="cErr" style="color:var(--warn);font-size:13px" hidden></div>
+    <button class="btn" type="submit">상담 신청</button>
+  </form></div>`;
+}
+
+// ════════════════════════════════════════════
+//  관리자 화면
+// ════════════════════════════════════════════
+const AT = { tab: 'courses', branch: '전체', grade: '전체', q: '', courseId: null, studentId: null };
+function adminView() {
+  if (ROUTE.p.tab) { AT.tab = ROUTE.p.tab; if (ROUTE.p.tab === 'courseEdit') AT.courseId = ROUTE.p.id; if (ROUTE.p.tab === 'qna' && ROUTE.p.id) AT.qnaId = ROUTE.p.id; ROUTE.p = {}; }
+  const waitQ = DB.qna.filter((q) => !q.answer).length, waitC = DB.consults.filter((c) => !c.done).length;
+  const menu = [['courses', '강좌 관리'], ['students', '학생 관리'], ['qna', 'Q&A 답변', waitQ], ['notices', '공지사항'], ['consults', '상담신청', S().consultEnabled ? waitC : 0], ['settings', '홈페이지 설정']];
+  const cur = AT.tab === 'courseEdit' ? 'courses' : AT.tab;
+  const views = { courses: aCourses, courseEdit: aCourseEdit, students: aStudents, qna: aQna, notices: aNotices, consults: aConsults, settings: aSettings };
+  return `<div class="admin"><nav class="side" aria-label="관리자 메뉴"><div class="who">관리자로 로그인됨</div>${menu.map(([k, l, n]) => `<button class="${k === cur ? 'on' : ''}" data-act="aTab" data-id="${k}">${l}${n ? `<span class="cnt">${n}</span>` : ''}</button>`).join('')}</nav>
+    <section class="amain">${views[AT.tab]()}</section></div>`;
+}
+function branchOpts(sel, withAll) { return (withAll ? `<option value="전체">전체 관</option>` : '') + S().branches.map((b) => `<option value="${b.id}" ${b.id === sel ? 'selected' : ''}>${esc(b.name)}</option>`).join(''); }
+function gradeOpts(sel, withAll) { return (withAll ? `<option value="전체">전체 학년</option>` : '') + S().grades.map((g) => `<option ${g === sel ? 'selected' : ''}>${esc(g)}</option>`).join(''); }
+
+// 강좌 관리
+function aCourses() {
+  const list = DB.courses.filter((c) => (AT.branch === '전체' || c.branchId === AT.branch) && (AT.grade === '전체' || c.grade === AT.grade));
+  const enrolled = (c) => DB.students.filter((s) => s.courseIds.includes(c.id)).length;
+  return `<div class="ahead"><div><h1>강좌 관리</h1><div class="muted" style="font-size:14px">강좌를 개설하고 영상을 올립니다. 학생은 수강신청된 강좌만 볼 수 있어요.</div></div><button class="btn yellow" data-act="newCourse">강좌 개설</button></div>
+    <div class="stats"><div class="stat"><b>${DB.courses.length}</b><span>개설 강좌</span></div><div class="stat"><b>${DB.courses.reduce((s, c) => s + c.lessons.length, 0)}</b><span>등록 영상</span></div><div class="stat"><b>${DB.students.length}</b><span>학생 계정</span></div><div class="stat"><b>${DB.qna.filter((q) => !q.answer).length}</b><span>답변 대기 질문</span></div></div>
+    <div class="toolbar">${multiBranch() ? `<select id="aBranch" aria-label="관">${branchOpts(AT.branch, true)}</select>` : ''}<select id="aGrade" aria-label="학년">${gradeOpts(AT.grade, true)}</select><span class="muted" style="font-size:13px">${list.length}개 강좌</span></div>
+    ${list.length ? `<div class="alist">${list.map((c) => `<div class="arow"><div class="th" style="background-image:url('${thumbOf(c)}')"></div>
+      <div style="min-width:0"><div class="t">${esc(c.title)}</div><div class="s">${multiBranch() ? esc(branchName(c.branchId)) + ' · ' : ''}${esc(c.grade)} · ${esc(c.teacher)} · 영상 ${c.lessons.length}개 · 수강생 ${enrolled(c)}명</div></div>
+      <div class="acts"><button class="btn sm" data-act="editCourse" data-id="${c.id}">영상·정보 관리</button></div></div>`).join('')}</div>` : '<div class="empty">조건에 맞는 강좌가 없습니다.</div>'}`;
+}
+function courseFormHtml(c) {
+  c = c || { branchId: AT.branch !== '전체' ? AT.branch : S().branches[0].id, grade: AT.grade !== '전체' ? AT.grade : S().grades[0], title: '', teacher: '', desc: '' };
+  return `<form class="form" id="courseForm">
+    <div class="two">${multiBranch() ? `<div class="field"><label for="cfBranch">관</label><select id="cfBranch">${branchOpts(c.branchId)}</select></div>` : ''}
+    <div class="field"><label for="cfGrade">학년</label><select id="cfGrade">${gradeOpts(c.grade)}</select></div></div>
+    <div class="field"><label for="cfTitle">강좌명</label><input id="cfTitle" value="${esc(c.title)}" placeholder="예: 세쌍둥이 공통수학1 기본개념"></div>
+    <div class="field"><label for="cfTeacher">담당 강사</label><input id="cfTeacher" value="${esc(c.teacher)}" placeholder="예: 한지우 원장T"></div>
+    <div class="field"><label for="cfDesc">강좌 소개</label><textarea id="cfDesc" style="min-height:80px">${esc(c.desc || '')}</textarea></div>
+    <div class="field"><label for="cfThumb">썸네일 사진 <span class="muted" style="font-weight:400">(없으면 강좌명으로 자동 생성)</span></label>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><div class="thumb-prev" id="cfPrev" style="background-image:url('${c.id ? thumbOf(c) : ''}')"></div><input id="cfThumb" type="file" accept="image/*" style="max-width:100%"></div></div>
+    <div id="cfErr" style="color:var(--warn);font-size:13px" hidden></div>
+  </form>`;
+}
+function openCourseForm(c) {
+  modal(`<h3>${c ? '강좌 정보 수정' : '강좌 개설'}</h3>${courseFormHtml(c)}<div class="acts"><button class="btn line" id="cfNo">취소</button><button class="btn" id="cfOk">${c ? '저장' : '개설하기'}</button></div>`, (m) => {
+    let thumb = c ? c.thumb : null;
+    m.querySelector('#cfThumb').onchange = async (e) => { const f = e.target.files[0]; if (!f) return; try { thumb = await readImage(f, 800, 450); m.querySelector('#cfPrev').style.backgroundImage = `url('${thumb}')`; } catch (er) { toast('사진을 읽지 못했어요'); } };
+    m.querySelector('#cfNo').onclick = closeModal;
+    m.querySelector('#cfOk').onclick = () => {
+      const title = m.querySelector('#cfTitle').value.trim(), teacher = m.querySelector('#cfTeacher').value.trim();
+      const err = m.querySelector('#cfErr');
+      if (!title) { err.textContent = '강좌명을 입력해주세요.'; err.hidden = false; return; }
+      const data = { branchId: multiBranch() ? m.querySelector('#cfBranch').value : S().branches[0].id, grade: m.querySelector('#cfGrade').value, title, teacher, desc: m.querySelector('#cfDesc').value.trim(), thumb };
+      if (c) { Object.assign(c, data); thumbCache.clear(); save(); closeModal(); toast('강좌 정보를 저장했어요'); render(); }
+      else { const nc = { id: uid(), color: ['#2d3a34', '#3b2f2a', '#2a3140', '#33402b', '#40302a', '#2b3a40'][DB.courses.length % 6], createdAt: today(), lessons: [], ...data }; DB.courses.push(nc); save(); closeModal(); toast('강좌를 개설했어요. 이제 영상을 올려주세요'); AT.tab = 'courseEdit'; AT.courseId = nc.id; render(); }
+    };
+  });
+}
+const uploads = [];
+function aCourseEdit() {
+  const c = courseById(AT.courseId); if (!c) { AT.tab = 'courses'; return aCourses(); }
+  const enrolled = DB.students.filter((s) => s.courseIds.includes(c.id));
+  return `<p style="margin:0 0 12px"><button class="btn line sm" data-act="aTab" data-id="courses">‹ 강좌 목록</button></p>
+    <div class="ahead"><div style="display:flex;gap:16px;align-items:center;min-width:0"><div class="thumb-prev" style="width:150px;background-image:url('${thumbOf(c)}')"></div><div style="min-width:0"><h1>${esc(c.title)}</h1><div class="muted" style="font-size:14px">${multiBranch() ? esc(branchName(c.branchId)) + ' · ' : ''}${esc(c.grade)} · ${esc(c.teacher)} · 수강생 ${enrolled.length}명</div></div></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn line sm" data-act="editCourseInfo" data-id="${c.id}">정보·썸네일 수정</button><button class="btn line sm" data-go="course" data-id="${c.id}">학생 화면으로 보기</button><button class="btn danger sm" data-act="delCourse" data-id="${c.id}">강좌 삭제</button></div></div>
+    <div class="lbl">영상 올리기</div>
+    <div class="drop" id="drop"><b>영상 파일 선택</b><br>여기를 누르거나 파일을 끌어다 놓으세요 · 여러 개 한 번에 가능</div>
+    <input type="file" id="upFile" accept="video/*" multiple hidden>
+    <div class="upq" id="upq">${uploadsHtml()}</div>
+    <div class="lbl" style="margin-top:26px">영상 목록 (${c.lessons.length}개) · 위아래 순서가 학생 화면 순서입니다</div>
+    ${c.lessons.length ? `<div class="alist">${c.lessons.map((l, i) => `<div class="lrow"><span class="no">${i + 1}</span><div class="nm"><div id="ln-${l.id}">${esc(l.title)}</div><div class="muted" style="font-size:12px">${l.src.type === 'file' ? '시연용 영상' : '직접 올린 영상' + (l.size ? ' · ' + fmtSize(l.size) : '')}</div></div>
+      <div class="acts"><button class="ib" title="위로" ${i === 0 ? 'disabled' : ''} data-act="lUp" data-id="${l.id}">▲</button><button class="ib" title="아래로" ${i === c.lessons.length - 1 ? 'disabled' : ''} data-act="lDown" data-id="${l.id}">▼</button><button class="ib" data-act="lRename" data-id="${l.id}">이름</button><button class="ib del" data-act="lDel" data-id="${l.id}">삭제</button></div></div>`).join('')}</div>` : '<div class="empty">아직 올린 영상이 없습니다.</div>'}
+    <div class="lbl" style="margin-top:26px">수강생 (${enrolled.length}명)</div>
+    <div class="panel" style="font-size:14px">${enrolled.length ? enrolled.map((s) => `<button class="btn line sm" style="margin:0 6px 6px 0" data-act="openStudent" data-id="${s.id}">${esc(s.name)} · 완료 ${coursePct(s.id, c)}%</button>`).join('') : '<span class="muted">아직 수강신청된 학생이 없습니다. 학생 관리에서 수강신청을 해주세요.</span>'}</div>`;
+}
+function uploadsHtml() { return uploads.filter((u) => u.courseId === AT.courseId).map((u) => `<div class="upi"><div style="display:flex;justify-content:space-between;gap:8px"><span>${esc(u.name)} · ${fmtSize(u.size)}</span><span>${u.done ? '완료' : u.pct + '%'}</span></div><div class="pbar"><i style="width:${u.pct}%"></i></div></div>`).join(''); }
+async function addVideos(files) {
+  const c = courseById(AT.courseId); if (!c) return;
+  for (const f of files) {
+    if (!f.type.startsWith('video/') && !/\.(mp4|mov|m4v|webm|mkv|avi)$/i.test(f.name)) { toast('영상 파일만 올릴 수 있어요'); continue; }
+    const u = { id: uid(), courseId: c.id, name: f.name, size: f.size, pct: 0, done: false }; uploads.push(u);
+    const refresh = () => { const q = $('#upq'); if (q) q.innerHTML = uploadsHtml(); };
+    refresh();
+    // 실제 납품판: 영상 서비스로 직접 전송 / 시연판: 이 브라우저 저장소에 보관
+    const key = 'v_' + uid();
+    const saving = IDB.put(key, f).then(() => true).catch(() => false);
+    for (let p = 0; p <= 100; p += 10) { u.pct = p; refresh(); await new Promise((r) => setTimeout(r, 90)); }
+    const ok = await saving;
+    if (!ok) { u.pct = 0; toast('이 브라우저에서는 영상을 저장할 수 없어요'); uploads.splice(uploads.indexOf(u), 1); refresh(); continue; }
+    c.lessons.push({ id: uid(), title: f.name.replace(/\.[^.]+$/, '').replace(/_+/g, ' ').trim(), src: { type: 'idb', key }, size: f.size });
+    save(); u.done = true; refresh();
+  }
+  render();
+  setTimeout(() => { for (let i = uploads.length - 1; i >= 0; i--) if (uploads[i].done) uploads.splice(i, 1); const q = $('#upq'); if (q) q.innerHTML = uploadsHtml(); }, 2500);
+}
+
+// 학생 관리
+function aStudents() {
+  const q = AT.q.trim();
+  const list = DB.students.filter((s) => (AT.branch === '전체' || s.branchId === AT.branch) && (AT.grade === '전체' || s.grade === AT.grade) && (!q || s.name.includes(q) || s.loginId.includes(q)));
+  return `<div class="ahead"><div><h1>학생 관리</h1><div class="muted" style="font-size:14px">학생 계정을 만들고, 들을 강좌를 수강신청해 줍니다.</div></div><button class="btn yellow" data-act="newStudent">학생 등록</button></div>
+    <div class="toolbar">${multiBranch() ? `<select id="aBranch" aria-label="관">${branchOpts(AT.branch, true)}</select>` : ''}<select id="aGrade" aria-label="학년">${gradeOpts(AT.grade, true)}</select><input id="aQ" placeholder="이름·아이디 검색" value="${esc(AT.q)}"><span class="muted" style="font-size:13px">${list.length}명</span></div>
+    <div class="tbl"><table class="board"><thead><tr><th>이름</th><th>아이디</th><th>${multiBranch() ? '관 · ' : ''}학년</th><th>수강 강좌</th><th>연락처</th><th></th></tr></thead><tbody>
+    ${list.length ? list.map((s) => `<tr><td><b>${esc(s.name)}</b></td><td>${esc(s.loginId)}</td><td>${multiBranch() ? esc(branchName(s.branchId)) + ' · ' : ''}${esc(s.grade)}</td><td>${s.courseIds.length}개</td><td style="font-variant-numeric:tabular-nums">${esc(s.phone)}</td><td style="text-align:right"><button class="btn sm" data-act="openStudent" data-id="${s.id}">수강신청·정보</button></td></tr>`).join('') : '<tr><td colspan="6" class="empty">조건에 맞는 학생이 없습니다.</td></tr>'}
+    </tbody></table></div>`;
+}
+function studentFormHtml(s) {
+  s = s || { name: '', loginId: '', pw: '', branchId: AT.branch !== '전체' ? AT.branch : S().branches[0].id, grade: AT.grade !== '전체' ? AT.grade : S().grades[0], phone: '' };
+  return `<form class="form" id="stForm"><div class="two">
+    <div class="field"><label for="sfName">이름</label><input id="sfName" value="${esc(s.name)}"></div>
+    <div class="field"><label for="sfPhone">연락처</label><input id="sfPhone" value="${esc(s.phone)}" inputmode="tel"></div>
+    <div class="field"><label for="sfId">로그인 아이디</label><input id="sfId" value="${esc(s.loginId)}" autocomplete="off"></div>
+    <div class="field"><label for="sfPw">비밀번호</label><input id="sfPw" value="${esc(s.pw)}" autocomplete="off"></div>
+    ${multiBranch() ? `<div class="field"><label for="sfBranch">관</label><select id="sfBranch">${branchOpts(s.branchId)}</select></div>` : ''}
+    <div class="field"><label for="sfGrade">학년</label><select id="sfGrade">${gradeOpts(s.grade)}</select></div>
+  </div><div id="sfErr" style="color:var(--warn);font-size:13px" hidden></div></form>`;
+}
+function readStudentForm(m, self) {
+  const d = { name: m.querySelector('#sfName').value.trim(), phone: m.querySelector('#sfPhone').value.trim(), loginId: m.querySelector('#sfId').value.trim(), pw: m.querySelector('#sfPw').value.trim(), branchId: multiBranch() ? m.querySelector('#sfBranch').value : S().branches[0].id, grade: m.querySelector('#sfGrade').value };
+  const err = m.querySelector('#sfErr');
+  const bad = !d.name ? '이름을 입력해주세요.' : !d.loginId ? '로그인 아이디를 입력해주세요.' : d.pw.length < 4 ? '비밀번호는 4자 이상으로 정해주세요.' : (DB.students.some((x) => x.loginId === d.loginId && x !== self) || DB.admins.some((a) => a.loginId === d.loginId)) ? '이미 쓰고 있는 아이디입니다.' : '';
+  if (bad) { err.textContent = bad; err.hidden = false; return null; }
+  return d;
+}
+function openStudentNew() {
+  modal(`<h3>학생 등록</h3>${studentFormHtml()}<div class="acts"><button class="btn line" id="sfNo">취소</button><button class="btn" id="sfOk">등록하고 수강신청하기</button></div>`, (m) => {
+    m.querySelector('#sfNo').onclick = closeModal;
+    m.querySelector('#sfOk').onclick = () => { const d = readStudentForm(m, null); if (!d) return; const s = { id: uid(), courseIds: [], createdAt: today(), ...d }; DB.students.push(s); save(); closeModal(); toast(`${s.name} 학생을 등록했어요`); openStudent(s.id); };
+  });
+}
+let enrollAll = false;
+function openStudent(id) {
+  const s = DB.students.find((x) => x.id === id); if (!s) return;
+  const sel = new Set(s.courseIds);
+  const draw = (m) => {
+    const pool = DB.courses.filter((c) => enrollAll || (c.branchId === s.branchId && c.grade === s.grade) || sel.has(c.id));
+    const groups = {}; pool.forEach((c) => { const k = (multiBranch() ? branchName(c.branchId) + ' · ' : '') + c.grade; (groups[k] = groups[k] || []).push(c); });
+    m.querySelector('#enrollBox').innerHTML = pool.length ? Object.entries(groups).map(([k, cs]) => `<div class="enroll-group"><h4>${esc(k)}</h4>${cs.map((c) => `<label class="enroll-item ${sel.has(c.id) ? 'on' : ''}"><input type="checkbox" data-cid="${c.id}" ${sel.has(c.id) ? 'checked' : ''}><span>${esc(c.title)} <span class="muted" style="font-size:12px">${esc(c.teacher)}</span></span>${sel.has(c.id) && s.courseIds.includes(c.id) ? `<span class="prog">완료 ${coursePct(s.id, c)}%</span>` : ''}</label>`).join('')}</div>`).join('') : `<div class="muted" style="padding:12px 0">${multiBranch() ? branchName(s.branchId) + ' ' : ''}${esc(s.grade)} 강좌가 없습니다. 아래 "다른 학년 강좌도 보기"를 켜보세요.</div>`;
+    m.querySelectorAll('[data-cid]').forEach((cb) => cb.onchange = () => { cb.checked ? sel.add(cb.dataset.cid) : sel.delete(cb.dataset.cid); cb.closest('.enroll-item').classList.toggle('on', cb.checked); m.querySelector('#selCnt').textContent = sel.size; });
+  };
+  modal(`<h3>${esc(s.name)} 학생</h3>
+    <div class="lbl" style="margin-top:0">수강신청 · 선택 <span id="selCnt">${sel.size}</span>개</div>
+    <div id="enrollBox"></div>
+    <label class="check" style="margin-top:8px"><input type="checkbox" id="enAll" ${enrollAll ? 'checked' : ''}> 다른 학년 강좌도 보기</label>
+    <details style="margin-top:18px"><summary style="cursor:pointer;font-weight:700">학생 정보 수정</summary><div style="margin-top:12px">${studentFormHtml(s)}</div></details>
+    <div class="acts" style="justify-content:space-between"><button class="btn danger" id="stDel">학생 삭제</button><span style="display:flex;gap:8px"><button class="btn line" id="stNo">닫기</button><button class="btn" id="stOk">저장</button></span></div>`, (m) => {
+    draw(m);
+    m.querySelector('#enAll').onchange = (e) => { enrollAll = e.target.checked; draw(m); };
+    m.querySelector('#stNo').onclick = closeModal;
+    m.querySelector('#stDel').onclick = () => ask(`${s.name} 학생 계정을 삭제할까요?\n시청 기록도 함께 지워집니다.`, '삭제', () => { DB.students = DB.students.filter((x) => x.id !== s.id); delete DB.progress[s.id]; save(); toast('학생을 삭제했어요'); render(); });
+    m.querySelector('#stOk').onclick = () => {
+      const open = m.querySelector('details').open;
+      if (open) { const d = readStudentForm(m, s); if (!d) return; Object.assign(s, d); }
+      s.courseIds = DB.courses.filter((c) => sel.has(c.id)).map((c) => c.id);
+      save(); closeModal(); toast(`${s.name} 학생 수강신청을 저장했어요 (${s.courseIds.length}개 강좌)`); render();
+    };
+  });
+}
+
+// Q&A 답변
+function aQna() {
+  const list = DB.qna.slice().sort((a, b) => (!!a.answer - !!b.answer) || b.createdAt.localeCompare(a.createdAt));
+  const sel = list.find((q) => q.id === AT.qnaId);
+  return `<div class="ahead"><div><h1>Q&amp;A 답변</h1><div class="muted" style="font-size:14px">답변 대기 질문이 위에 모입니다.</div></div></div>
+    ${sel ? `<div class="panel post" style="margin-bottom:18px"><h2>${sel.secret ? '[비밀글] ' : ''}${esc(sel.title)}</h2><div class="meta">${esc(sel.author)} · ${sel.createdAt}</div><div class="body">${esc(sel.body)}</div>
+      <div class="field" style="margin-top:18px"><label for="ansBody">답변</label><textarea id="ansBody">${esc(sel.answer ? sel.answer.body : '')}</textarea></div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn" data-act="saveAns" data-id="${sel.id}">답변 등록</button><button class="btn line" data-act="closeAns">닫기</button><button class="btn danger" data-act="delQna" data-id="${sel.id}" style="margin-left:auto">질문 삭제</button></div></div>` : ''}
+    <div class="tbl"><table class="board"><thead><tr><th>제목</th><th>작성자</th><th>상태</th><th>날짜</th></tr></thead><tbody>
+    ${list.length ? list.map((q) => `<tr class="click" data-act="openAns" data-id="${q.id}"><td>${q.secret ? '[비밀글] ' : ''}${esc(q.title)}</td><td>${esc(q.author)}</td><td class="st">${q.answer ? '<span class="badge done">답변완료</span>' : '<span class="badge ing">답변대기</span>'}</td><td class="date">${q.createdAt}</td></tr>`).join('') : '<tr><td colspan="4" class="empty">질문이 없습니다.</td></tr>'}
+    </tbody></table></div>`;
+}
+
+// 공지사항
+function aNotices() {
+  const list = DB.notices.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  return `<div class="ahead"><div><h1>공지사항</h1><div class="muted" style="font-size:14px">최신 공지 4개가 첫 화면에 보입니다.</div></div><button class="btn yellow" data-act="newNotice">공지 쓰기</button></div>
+    <div class="tbl"><table class="board"><thead><tr><th>제목</th><th>날짜</th><th></th></tr></thead><tbody>
+    ${list.length ? list.map((n) => `<tr><td>${esc(n.title)}</td><td class="date">${n.createdAt}</td><td style="text-align:right;white-space:nowrap"><button class="btn line sm" data-act="editNotice" data-id="${n.id}">수정</button> <button class="btn danger sm" data-act="delNotice" data-id="${n.id}">삭제</button></td></tr>`).join('') : '<tr><td colspan="3" class="empty">공지사항이 없습니다.</td></tr>'}
+    </tbody></table></div>`;
+}
+function openNotice(n) {
+  modal(`<h3>${n ? '공지 수정' : '공지 쓰기'}</h3><form class="form"><div class="field"><label for="nfTitle">제목</label><input id="nfTitle" value="${esc(n ? n.title : '')}"></div><div class="field"><label for="nfBody">내용</label><textarea id="nfBody" style="min-height:180px">${esc(n ? n.body : '')}</textarea></div></form>
+    <div class="acts"><button class="btn line" id="nfNo">취소</button><button class="btn" id="nfOk">${n ? '저장' : '등록'}</button></div>`, (m) => {
+    m.querySelector('#nfNo').onclick = closeModal;
+    m.querySelector('#nfOk').onclick = () => { const title = m.querySelector('#nfTitle').value.trim(); if (!title) { toast('제목을 입력해주세요'); return; } const body = m.querySelector('#nfBody').value.trim(); if (n) Object.assign(n, { title, body }); else DB.notices.push({ id: uid(), title, body, createdAt: today() }); save(); closeModal(); toast(n ? '공지를 수정했어요' : '공지를 등록했어요'); render(); };
+  });
+}
+
+// 상담신청
+function aConsults() {
+  const list = DB.consults.slice().sort((a, b) => (a.done - b.done) || b.createdAt.localeCompare(a.createdAt));
+  return `<div class="ahead"><div><h1>상담신청</h1><div class="muted" style="font-size:14px">${S().consultEnabled ? '홈페이지에서 상담신청을 받고 있습니다.' : '지금은 상담신청이 꺼져 있습니다. 홈페이지 설정에서 켤 수 있어요.'}</div></div></div>
+    <div class="tbl"><table class="board"><thead><tr><th>이름</th><th>연락처</th><th>학년</th><th>내용</th><th>날짜</th><th>상태</th></tr></thead><tbody>
+    ${list.length ? list.map((c) => `<tr><td><b>${esc(c.name)}</b></td><td style="font-variant-numeric:tabular-nums">${esc(c.phone)}</td><td>${esc(c.grade)}</td><td style="min-width:180px">${esc(c.message)}</td><td class="date">${c.createdAt}</td><td><button class="btn ${c.done ? 'line' : 'yellow'} sm" data-act="toggleConsult" data-id="${c.id}">${c.done ? '상담완료' : '상담대기'}</button></td></tr>`).join('') : '<tr><td colspan="6" class="empty">상담신청이 없습니다.</td></tr>'}
+    </tbody></table></div>`;
+}
+
+// 홈페이지 설정
+function aSettings() {
+  const s = S();
+  return `<div class="ahead"><div><h1>홈페이지 설정</h1><div class="muted" style="font-size:14px">학원 이름, 첫 화면 문구와 사진, 연락처를 바꿉니다.</div></div><button class="btn yellow" data-act="saveSettings">저장</button></div>
+  <form class="form" id="setForm" style="max-width:760px">
+    <div class="panel form"><div class="lbl" style="margin:0">기본 정보</div>
+      <div class="field"><label for="sName">학원 이름</label><input id="sName" value="${esc(s.name)}"></div>
+      <div class="field"><label for="sAddr">주소</label><input id="sAddr" value="${esc(s.address)}"></div>
+      <div class="field"><label for="sHours">상담 시간</label><input id="sHours" value="${esc(s.hours)}"></div>
+    </div>
+    <div class="panel form"><div class="lbl" style="margin:0">첫 화면</div>
+      <div class="field"><label for="sKicker">윗줄 작은 문구</label><input id="sKicker" value="${esc(s.kicker)}"></div>
+      <div class="two"><div class="field"><label for="sT1">큰 제목 첫 줄</label><input id="sT1" value="${esc(s.title1)}"></div><div class="field"><label for="sT2">큰 제목 둘째 줄 (포인트 색)</label><input id="sT2" value="${esc(s.title2)}"></div></div>
+      <div class="field"><label>대표 사진 <span class="muted" style="font-weight:400">(어둡게 처리되어 글씨가 잘 보입니다)</span></label>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><div class="thumb-prev" id="heroPrev" style="filter:brightness(.7);background-image:url('${heroBg()}')"></div>
+        <div style="display:grid;gap:6px"><input type="file" id="sHero" accept="image/*" style="max-width:100%"><button type="button" class="btn line sm" data-act="heroReset">기본 이미지로 되돌리기</button></div></div></div>
+      <div class="two"><div class="field"><label for="sCA">학원소개 카드 문구</label><textarea id="sCA" style="min-height:70px">${esc(s.cardAbout)}</textarea></div><div class="field"><label for="sCV">동영상강의 카드 문구</label><textarea id="sCV" style="min-height:70px">${esc(s.cardVideo)}</textarea></div></div>
+      <div class="field"><label for="sCQ">Q&amp;A 카드 문구</label><textarea id="sCQ" style="min-height:70px">${esc(s.cardQna)}</textarea></div>
+    </div>
+    <div class="panel form"><div class="lbl" style="margin:0">관 · 연락처</div>
+      <div id="brList" style="display:grid;gap:8px">${s.branches.map((b) => `<div class="two" data-br="${b.id}" style="grid-template-columns:1fr 1fr auto;align-items:end"><div class="field"><label>관 이름</label><input class="brName" value="${esc(b.name)}"></div><div class="field"><label>전화번호</label><input class="brPhone" value="${esc(b.phone)}"></div><button type="button" class="btn danger sm" data-act="delBranch" data-id="${b.id}" ${s.branches.length < 2 ? 'disabled' : ''}>삭제</button></div>`).join('')}</div>
+      <div><button type="button" class="btn line sm" data-act="addBranch">관 추가</button> <span class="muted" style="font-size:13px">관이 하나뿐이면 화면에서 관 선택이 사라집니다.</span></div>
+    </div>
+    <div class="panel form"><div class="lbl" style="margin:0">학년 · 상담신청</div>
+      <div class="field"><label for="sGrades">학년 목록 (쉼표로 구분)</label><input id="sGrades" value="${esc(s.grades.join(', '))}"></div>
+      <label class="check"><input type="checkbox" id="sConsult" ${s.consultEnabled ? 'checked' : ''}> 홈페이지에서 상담신청 받기</label>
+    </div>
+    <div class="panel form"><div class="lbl" style="margin:0">학원소개 페이지</div>
+      <div class="field"><label for="sAbout">학원 소개글</label><textarea id="sAbout" style="min-height:140px">${esc(s.about)}</textarea></div>
+      <div class="field"><label for="sTeachers">강사진 (한 줄에 한 명: 이름 | 담당 | 소개)</label><textarea id="sTeachers">${esc(s.teachers.map((t) => [t.name, t.subject, t.desc].join(' | ')).join('\n'))}</textarea></div>
+    </div>
+    <div class="panel"><div class="lbl" style="margin:0 0 8px">시연 데이터</div><p class="muted" style="font-size:14px;margin:0 0 10px">처음 상태(예시 강좌·학생·게시글)로 되돌립니다. 이 브라우저에 올린 영상도 지워집니다.</p><button type="button" class="btn danger sm" data-act="resetDemo">처음 상태로 되돌리기</button></div>
+  </form>`;
+}
+let pendingHero;
+function saveSettingsForm() {
+  const s = S(); const g = (id) => $('#' + id).value;
+  const branches = [...document.querySelectorAll('[data-br]')].map((r) => ({ id: r.dataset.br, name: r.querySelector('.brName').value.trim() || '관', phone: r.querySelector('.brPhone').value.trim() }));
+  const grades = g('sGrades').split(',').map((x) => x.trim()).filter(Boolean);
+  if (!grades.length) { toast('학년을 하나 이상 입력해주세요'); return; }
+  Object.assign(s, { name: g('sName').trim() || s.name, address: g('sAddr').trim(), hours: g('sHours').trim(), kicker: g('sKicker').trim(), title1: g('sT1').trim(), title2: g('sT2').trim(), cardAbout: g('sCA').trim(), cardVideo: g('sCV').trim(), cardQna: g('sCQ').trim(), branches, grades, consultEnabled: $('#sConsult').checked, about: g('sAbout').trim(),
+    teachers: g('sTeachers').split('\n').map((l) => l.split('|').map((x) => x.trim())).filter((a) => a[0]).map(([name, subject = '', desc = '']) => ({ name, subject, desc })) });
+  if (pendingHero !== undefined) { s.heroImage = pendingHero; heroDefault = null; pendingHero = undefined; }
+  const fb = s.branches[0].id;
+  DB.courses.forEach((c) => { if (!s.branches.some((b) => b.id === c.branchId)) c.branchId = fb; });
+  DB.students.forEach((st) => { if (!s.branches.some((b) => b.id === st.branchId)) st.branchId = fb; });
+  save(); toast('홈페이지 설정을 저장했어요'); render();
+}
+
+function bindAdmin() {
+  const b = $('#aBranch'); if (b) b.onchange = () => { AT.branch = b.value; render(); };
+  const g = $('#aGrade'); if (g) g.onchange = () => { AT.grade = g.value; render(); };
+  const q = $('#aQ'); if (q) q.oninput = () => { AT.q = q.value; const pos = q.selectionStart; render(); const n = $('#aQ'); n.focus(); n.setSelectionRange(pos, pos); };
+  const drop = $('#drop'), up = $('#upFile');
+  if (drop && up) {
+    drop.onclick = () => up.click(); up.onchange = () => { addVideos([...up.files]); up.value = ''; };
+    ['dragenter', 'dragover'].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add('over'); }));
+    ['dragleave', 'drop'].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
+    drop.addEventListener('drop', (e) => { if (e.dataTransfer.files.length) addVideos([...e.dataTransfer.files]); });
+  }
+  const h = $('#sHero'); if (h) h.onchange = async () => { const f = h.files[0]; if (!f) return; try { pendingHero = await readImage(f, 1800, 1100, 0.78); $('#heroPrev').style.backgroundImage = `url('${pendingHero}')`; toast('저장을 누르면 첫 화면에 적용됩니다'); } catch (e) { toast('사진을 읽지 못했어요'); } };
+}
+
+// ════════════════════════════════════════════
+//  클릭 · 폼 처리
+// ════════════════════════════════════════════
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-go],[data-act]'); if (!t) return;
+  if (t.dataset.go) {
+    const p = { id: t.dataset.id }; if (t.dataset.tab) p.tab = t.dataset.tab;
+    if (t.dataset.go === 'course') currentLesson = null;
+    if (t.dataset.go === 'admin' && !p.tab) p.tab = 'courses';
+    go(t.dataset.go, p); return;
+  }
+  const id = t.dataset.id; const a = t.dataset.act;
+  const c = courseById(AT.courseId);
+  const L = c && id ? c.lessons.findIndex((l) => l.id === id) : -1;
+  switch (a) {
+    case 'burger': { const m = $('#mnav'); m.classList.toggle('open'); t.setAttribute('aria-expanded', m.classList.contains('open')); break; }
+    case 'logout': SESSION = null; saveSession(); toast('로그아웃했어요'); go('home'); break;
+    case 'demoLogin': doLogin(id, '1234'); break;
+    case 'fBranch': filt.branch = id; render(); break;
+    case 'fGrade': filt.grade = id; render(); break;
+    case 'pickLesson': stopPlayer(); currentLesson = id; document.querySelectorAll('.lesson').forEach((x) => x.classList.toggle('on', x.dataset.id === id)); mountPlayer(); $('#player').scrollIntoView({ behavior: 'smooth', block: 'center' }); break;
+    case 'aTab': AT.tab = id; AT.qnaId = null; render(); break;
+    case 'newCourse': openCourseForm(null); break;
+    case 'editCourse': AT.tab = 'courseEdit'; AT.courseId = id; render(); break;
+    case 'editCourseInfo': openCourseForm(courseById(id)); break;
+    case 'delCourse': { const cc = courseById(id); ask(`"${cc.title}" 강좌를 삭제할까요?\n올린 영상과 수강신청 정보도 함께 지워집니다.`, '강좌 삭제', () => { cc.lessons.forEach((l) => l.src.type === 'idb' && IDB.del(l.src.key)); DB.courses = DB.courses.filter((x) => x.id !== id); DB.students.forEach((s) => { s.courseIds = s.courseIds.filter((x) => x !== id); }); save(); AT.tab = 'courses'; toast('강좌를 삭제했어요'); render(); }); break; }
+    case 'lUp': case 'lDown': { const j = L + (a === 'lUp' ? -1 : 1); if (L < 0 || j < 0 || j >= c.lessons.length) break; [c.lessons[L], c.lessons[j]] = [c.lessons[j], c.lessons[L]]; save(); render(); break; }
+    case 'lRename': {
+      const l = c.lessons[L]; const box = $('#ln-' + id); if (!box || box.querySelector('input')) break;
+      box.innerHTML = `<input value="${esc(l.title)}" maxlength="100" style="width:100%;border:1px solid var(--ink);padding:5px 8px" aria-label="영상 이름">`;
+      const inp = box.querySelector('input'); inp.focus(); inp.select(); let fin = false;
+      const done = (ok) => { if (fin) return; fin = true; const v = inp.value.trim(); if (ok && v && v !== l.title) { l.title = v; save(); toast('영상 이름을 바꿨어요'); } render(); };
+      inp.onkeydown = (ev) => { if (ev.key === 'Enter') done(true); if (ev.key === 'Escape') done(false); }; inp.onblur = () => done(true); break;
+    }
+    case 'lDel': { const l = c.lessons[L]; ask(`"${l.title}" 영상을 삭제할까요?`, '영상 삭제', () => { if (l.src.type === 'idb') IDB.del(l.src.key); c.lessons.splice(c.lessons.indexOf(l), 1); Object.values(DB.progress).forEach((p) => delete p[l.id]); save(); toast('영상을 삭제했어요'); render(); }); break; }
+    case 'newStudent': openStudentNew(); break;
+    case 'openStudent': openStudent(id); break;
+    case 'openAns': AT.qnaId = id; render(); setTimeout(() => { const x = $('#ansBody'); if (x) x.focus(); }, 0); break;
+    case 'closeAns': AT.qnaId = null; render(); break;
+    case 'saveAns': { const q = DB.qna.find((x) => x.id === id); const body = $('#ansBody').value.trim(); if (!body) { toast('답변 내용을 입력해주세요'); break; } q.answer = { body, at: today() }; save(); AT.qnaId = null; toast('답변을 등록했어요'); render(); break; }
+    case 'delQna': ask('이 질문을 삭제할까요?', '삭제', () => { DB.qna = DB.qna.filter((x) => x.id !== id); AT.qnaId = null; save(); toast('질문을 삭제했어요'); render(); }); break;
+    case 'newNotice': openNotice(null); break;
+    case 'editNotice': openNotice(DB.notices.find((x) => x.id === id)); break;
+    case 'delNotice': ask('이 공지를 삭제할까요?', '삭제', () => { DB.notices = DB.notices.filter((x) => x.id !== id); save(); toast('공지를 삭제했어요'); render(); }); break;
+    case 'toggleConsult': { const x = DB.consults.find((y) => y.id === id); x.done = !x.done; save(); render(); break; }
+    case 'saveSettings': saveSettingsForm(); break;
+    case 'heroReset': pendingHero = null; heroDefault = null; { const tmp = S().heroImage; S().heroImage = null; $('#heroPrev').style.backgroundImage = `url('${heroBg()}')`; S().heroImage = tmp; } toast('저장을 누르면 기본 이미지로 바뀝니다'); break;
+    case 'addBranch': { const row = document.createElement('div'); const nid = 'br' + uid(); row.className = 'two'; row.dataset.br = nid; row.style.cssText = 'grid-template-columns:1fr 1fr auto;align-items:end'; row.innerHTML = `<div class="field"><label>관 이름</label><input class="brName" value="새 관"></div><div class="field"><label>전화번호</label><input class="brPhone" value=""></div><button type="button" class="btn danger sm" data-act="delBranch" data-id="${nid}">삭제</button>`; $('#brList').appendChild(row); row.querySelector('.brName').select(); break; }
+    case 'delBranch': { const rows = document.querySelectorAll('[data-br]'); if (rows.length < 2) break; document.querySelector(`[data-br="${id}"]`).remove(); toast('저장을 누르면 반영됩니다. 이 관의 강좌·학생은 첫 번째 관으로 옮겨져요'); break; }
+    case 'resetDemo': ask('시연 데이터를 처음 상태로 되돌릴까요?\n지금까지 만든 강좌·학생·게시글과 올린 영상이 모두 지워집니다.', '처음 상태로', async () => { await IDB.clear(); DB = seed(); save(); thumbCache.clear(); heroDefault = null; AT.tab = 'courses'; toast('처음 상태로 되돌렸어요'); render(); }); break;
+  }
+});
+document.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const f = e.target;
+  if (f.id === 'loginForm') { const ok = doLogin($('#lgId').value.trim(), $('#lgPw').value); if (!ok) { const er = $('#lgErr'); er.textContent = '아이디 또는 비밀번호가 맞지 않습니다.'; er.hidden = false; } }
+  if (f.id === 'qnaUnlock') { const q = DB.qna.find((x) => x.id === f.dataset.id); if (q && q.guestPw && $('#qPw').value === q.guestPw) { unlockedQna.add(q.id); render(); } else $('#qPwErr').hidden = false; }
+  if (f.id === 'qnaForm') {
+    const st = me(); const author = $('#qAuthor').value.trim(), title = $('#qTitle').value.trim(), body = $('#qBody').value.trim(), secret = $('#qSecret').checked, pw = $('#qSecretPw').value.trim();
+    const err = $('#qErr'); const bad = !author ? '작성자 이름을 입력해주세요.' : !title ? '제목을 입력해주세요.' : !body ? '내용을 입력해주세요.' : (secret && !st && pw.length < 4) ? '비밀글은 비밀번호 4자리 이상을 정해주세요.' : '';
+    if (bad) { err.textContent = bad; err.hidden = false; return; }
+    const q = { id: uid(), title, body, author, studentId: st ? st.id : null, secret, guestPw: pw || null, createdAt: today(), answer: null };
+    DB.qna.push(q); save(); unlockedQna.add(q.id); toast('질문을 등록했어요'); go('qnaPost', { id: q.id });
+  }
+  if (f.id === 'consultForm') {
+    const name = $('#cName').value.trim(), phone = $('#cPhone').value.trim(); const err = $('#cErr');
+    if (!name || !phone) { err.textContent = '이름과 연락처를 입력해주세요.'; err.hidden = false; return; }
+    DB.consults.push({ id: uid(), name, phone, grade: $('#cGrade').value, message: $('#cMsg').value.trim(), createdAt: today(), done: false }); save();
+    $('#app main').innerHTML = band('CONSULT', '상담신청') + `<div class="wrap page"><div class="panel" style="max-width:640px"><h2 style="font-family:var(--display);margin:0 0 8px">상담신청이 접수되었습니다</h2><p class="muted" style="margin:0">학원에서 확인 후 ${esc(phone)} 번호로 연락드리겠습니다.</p><p style="margin-top:16px"><button class="btn line" data-go="home">첫 화면으로</button></p></div></div>`;
+  }
+});
+
+// 시작
+DB = load() || seed(); save(); loadSession();
+if (SESSION && SESSION.role === 'student' && !me()) SESSION = null;
+render();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { thumbCache.clear(); heroDefault = null; render(); });
+</script>
+
+</body>
+</html>

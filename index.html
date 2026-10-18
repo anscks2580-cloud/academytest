@@ -34,7 +34,7 @@
   color-scheme: light;
 }
 * { box-sizing: border-box; }
-body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.6; }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere; }
 button, input, select, textarea { font: inherit; color: inherit; }
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -263,6 +263,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .demo-box button { background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; font-weight: 700; }
 .login-box { max-width: 420px; margin: 0 auto; }
 .thumb-prev { aspect-ratio: 16/9; width: 200px; max-width: 100%; background: #333 center/cover; border: 1px solid var(--line); }
+.dswitch { position: fixed; left: max(12px, env(safe-area-inset-left, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 90; display: flex; align-items: center; gap: 2px; background: #111; color: #aaa; font-size: 12px; padding: 4px 4px 4px 10px; border-radius: 999px; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+.dswitch span { margin-right: 4px; }
+.dswitch a { color: #fff; text-decoration: none; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; font-weight: 700; }
+.dswitch a.on { background: #fff; color: #111; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
@@ -274,6 +278,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 //  저장소 (시연판: 이 브라우저에 저장 · 실제 납품판은 서버 데이터베이스로 교체)
 // ════════════════════════════════════════════
 const KEY = 'academy_demo_v1';
+// 시안 구분 (같은 데이터를 시안 A·B·C가 함께 씀)
+const DESIGN = 'A';
+const MEDIA_BASE = '';
+const DESIGN_LINKS = { A: './', B: 'b/', C: 'c/' };
+const layout = (head, body) => head + body;
 let DB = null;
 function load() { try { const r = localStorage.getItem(KEY); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) { toast('저장 공간이 부족해 일부 내용이 저장되지 않았어요'); } }
@@ -485,14 +494,17 @@ function footer() {
     <div class="demo-flag">이 사이트는 학원 홈페이지 시안입니다. 입력한 내용은 지금 보고 계신 브라우저에만 저장됩니다.</div>
   </div></footer>`;
 }
+function switcher() {
+  return `<nav class="dswitch" aria-label="시안 바꿔보기"><span>시안</span>${Object.entries(DESIGN_LINKS).map(([k, h]) => `<a href="${h}" class="${k === DESIGN ? 'on' : ''}">${k}</a>`).join('')}</nav>`;
+}
 function band(kicker, title) { return `<section class="band"><div class="wrap"><small>${esc(kicker)}</small><h1>${esc(title)}</h1></div></section>`; }
 
 function render() {
   const app = $('#app');
-  if (ROUTE.page === 'admin') { if (!isAdmin()) { ROUTE = { page: 'login', p: {} }; } else { app.innerHTML = header() + adminView(); bindAdmin(); return; } }
+  if (ROUTE.page === 'admin') { if (!isAdmin()) { ROUTE = { page: 'login', p: {} }; } else { app.innerHTML = layout(header(), adminView()) + switcher(); bindAdmin(); return; } }
   const views = { home: homeView, about: aboutView, courses: coursesView, course: courseView, qna: qnaView, qnaPost: qnaPostView, qnaWrite: qnaWriteView, notice: noticeView, noticePost: noticePostView, consult: consultView, login: loginView, my: myView };
   const v = (views[ROUTE.page] || homeView)();
-  app.innerHTML = header() + (ROUTE.page === 'home' ? v : `<main>${v}</main>`) + footer();
+  app.innerHTML = layout(header(), (ROUTE.page === 'home' ? v : `<main>${v}</main>`) + footer()) + switcher();
   if (ROUTE.page === 'course') mountPlayer();
   if (ROUTE.page === 'login') { const i = $('#lgId'); if (i) i.focus(); }
 }
@@ -619,7 +631,7 @@ async function mountPlayer() {
   const l = c.lessons.find((x) => x.id === currentLesson); if (!l) return;
   $('#nowTitle').textContent = l.title;
   let src = null;
-  if (l.src.type === 'file') src = l.src.path;
+  if (l.src.type === 'file') src = MEDIA_BASE + l.src.path;
   else if (l.src.type === 'idb') { try { const blob = await IDB.get(l.src.key); if (blob) { playerUrl = URL.createObjectURL(blob); src = playerUrl; } } catch (e) {} }
   if (!src) { box.textContent = '이 영상 파일을 찾을 수 없습니다. (시연판은 영상을 올린 브라우저에서만 재생됩니다)'; return; }
   box.innerHTML = `<video controls playsinline preload="metadata" src="${esc(src)}"></video>`;
